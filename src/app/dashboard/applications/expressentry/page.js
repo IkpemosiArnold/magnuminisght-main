@@ -14,7 +14,9 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 const Step1 = () => (
   <Row>
-    <h3 className="font-bold text-center">Professional History</h3>
+    <h3 className=" text-center text-2xl blue-text font-medium">
+      Professional History
+    </h3>
     <Col className="col-12 d-flex flex-column" id="loginSection">
       <div className="mt-40">
         <Form.Label>Occupation</Form.Label>
@@ -50,7 +52,9 @@ const Step1 = () => (
 
 const Step2 = () => (
   <Row>
-    <h3 className="font-bold text-center">Travel History</h3>
+    <h3 className="text-center text-2xl blue-text font-medium">
+      Travel History
+    </h3>
 
     <Col className="col-12 d-flex flex-column" id="loginSection">
       <div className="mt-40">
@@ -100,7 +104,9 @@ const Step2 = () => (
 
 const Step3 = () => (
   <Row>
-    <h3 className="font-bold text-center">Family Information</h3>
+    <h3 className="text-center text-2xl blue-text font-medium">
+      Family Information
+    </h3>
     <Col className="col-12 d-flex flex-column" id="loginSection">
       <div className="mt-40">
         <Form.Label>Legal Guardian/parents</Form.Label>
