@@ -8,19 +8,15 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 // Formik validation
 import * as Yup from "yup";
 import { useFormik } from "formik";
 const Step1 = () => (
   <Row>
-    <Col className="col-lg-3 col-md-13 col-sm-10 col-12">
-      <h3 className="font-bold">Professional History</h3>
-    </Col>
-    <Col
-      className="col-lg-9 col-md-12 col-sm-10 col-12 d-flex flex-column"
-      id="loginSection"
-    >
-      <div id="loginForm" className="mt-40">
+    <h3 className="font-bold text-center">Professional History</h3>
+    <Col className="col-12 d-flex flex-column" id="loginSection">
+      <div className="mt-40">
         <Form.Label>Occupation</Form.Label>
         <InputGroup className="mb-3" controlId="formBasicOccupation">
           <Form.Control
@@ -44,7 +40,7 @@ const Step1 = () => (
         </InputGroup>
 
         <Form.Label>Employer Details</Form.Label>
-        <InputGroup className="mb-3" controlId="formBasicOccupation">
+        <InputGroup className="mb-3" controlid="formBasicOccupation">
           <Form.Control name="occupation" id="occupation" />
         </InputGroup>
       </div>
@@ -54,14 +50,10 @@ const Step1 = () => (
 
 const Step2 = () => (
   <Row>
-    <Col className="col-lg-3 col-md-13 col-sm-10 col-12">
-      <h3 className="font-bold">Travel History</h3>
-    </Col>
-    <Col
-      className="col-lg-9 col-md-12 col-sm-10 col-12 d-flex flex-column"
-      id="loginSection"
-    >
-      <div id="loginForm" className="mt-40">
+    <h3 className="font-bold text-center">Travel History</h3>
+
+    <Col className="col-12 d-flex flex-column" id="loginSection">
+      <div className="mt-40">
         <Form.Label>Do you have any travel history ?</Form.Label>
         <InputGroup className="mb-3" controlId="formBasicOccupation">
           <Form.Control
@@ -72,7 +64,7 @@ const Step2 = () => (
         </InputGroup>
 
         <Form.Label>Which Countries ?</Form.Label>
-        <InputGroup className="mb-3" controlId="formBasicOccupation">
+        <InputGroup className="mb-3" controlid="formBasicOccupation">
           <Form.Control name="occupation" id="occupation" />
         </InputGroup>
         <Form.Label>Do you have any travel history ?</Form.Label>
@@ -108,16 +100,11 @@ const Step2 = () => (
 
 const Step3 = () => (
   <Row>
-    <Col className="col-lg-3 col-md-13 col-sm-10 col-12 ">
-      <h3 className="font-bold">Family Information</h3>
-    </Col>
-    <Col
-      className="col-lg-9 col-md-12 col-sm-10 col-12 d-flex flex-column"
-      id="loginSection"
-    >
-      <div id="loginForm" className="mt-40">
+    <h3 className="font-bold text-center">Family Information</h3>
+    <Col className="col-12 d-flex flex-column" id="loginSection">
+      <div className="mt-40">
         <Form.Label>Legal Guardian/parents</Form.Label>
-        <InputGroup className="mb-3" controlId="formBasicOccupation">
+        <InputGroup className="mb-3" controlid="formBasicOccupation">
           <Form.Control
             name="occupation"
             id="occupation"
@@ -150,9 +137,13 @@ export default function Express() {
   return (
     <main className="flex min-h-screen flex-col p-12 libre-franklin min-w-[90vw] sm:min-w-[60vw]">
       <h1 className="font-bold text-xl blue-text">Fill this form carefully</h1>
-      <Container fluid id="loginContainer" className="mt-4">
-        {steps[currentStep]}
-        <div className="mt-4">
+      <Container fluid className="mt-4 formContainer">
+        <TransitionGroup>
+          <CSSTransition key={currentStep} timeout={500} classNames="slide">
+            {steps[currentStep]}
+          </CSSTransition>
+        </TransitionGroup>
+        <div className="mt-4 flex flex-row justify-center">
           {" "}
           <Button
             variant="primary"
