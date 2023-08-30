@@ -91,7 +91,6 @@ export default function Page() {
                 isInvalid={!!validation.errors.email}
               />
               <InputGroup.Text className="register-addons">
-                {" "}
                 <MdEmail />
               </InputGroup.Text>
               {validation.touched.email && validation.errors.email ? (
@@ -114,7 +113,6 @@ export default function Page() {
                 isInvalid={!!validation.errors.password}
               />
               <InputGroup.Text className="register-addons">
-                {" "}
                 <BiSolidLockAlt />
               </InputGroup.Text>
               {validation.touched.password && validation.errors.password ? (
@@ -130,9 +128,8 @@ export default function Page() {
             >
               Login
             </Button>
-
             <p className="mt-3 text-center">
-              Don't have an account ?
+              {`Don't have an account ?`}
               <a href="/register">
                 <span className="blue-text bold"> Sign up</span>
               </a>
