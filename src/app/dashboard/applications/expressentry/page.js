@@ -136,7 +136,11 @@ const Step3 = () => (
     </Col>
   </Row>
 );
-const steps = [<Step1 />, <Step2 />, <Step3 />];
+const steps = [
+  <Step1 key="step1" />,
+  <Step2 key="step2" />,
+  <Step3 key="step3" />,
+];
 
 export default function Express() {
   const [currentStep, setCurrentStep] = useState(0);
