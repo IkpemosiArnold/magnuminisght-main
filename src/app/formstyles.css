@@ -1,0 +1,68 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+#registerContainer,
+#loginContainer {
+  padding: 0;
+  overflow-x: hidden;
+  font-weight: 500;
+}
+.reg-img {
+  height: 100vh;
+  object-fit: cover;
+  border-radius: 4px;
+}
+.register-logo {
+  border-radius: 50%;
+  height: 50px;
+  width: auto;
+  align-self: flex-end;
+  margin-top: 1.6%;
+  margin-right: 4%;
+}
+
+.register-addons {
+  background-color: #ffffff;
+}
+#registerSection,
+#loginSection {
+  font-family: "Poppins", sans-serif;
+}
+.registerHeaderText > h2,
+.loginHeaderText > h2 {
+  color: #203354;
+  font-weight: bold;
+}
+
+.loginHeaderText {
+  padding-left: 8%;
+  margin-top: auto;
+}
+.registerHeaderText {
+  margin-top: auto;
+}
+#registerForm {
+  margin-top: auto;
+}
+#loginForm {
+  margin-bottom: auto;
+}
+#registerForm,
+#loginForm {
+  padding-top: 0%;
+  padding-bottom: 8%;
+  padding-left: 8%;
+  padding-right: 8%;
+}
+#loginForm > div > input,
+.register-input {
+  border-right: none;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  font-family: "Poppins", sans-serif;
+}
+#registerForm > div > input > ::placeholder,
+#loginForm > div > input {
+  font-family: "Poppins", sans-serif;
+}
+.valid-feedback {
+  display: block !important;
+}
