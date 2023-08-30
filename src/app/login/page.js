@@ -8,7 +8,7 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
-
+import Image from "next/image";
 //style
 import "../formstyles.css";
 
@@ -48,13 +48,27 @@ export default function Page() {
     <Container fluid id="loginContainer">
       <Row>
         <Col className="col-lg-6 col-md-6 col-sm-12 col-12 d-none d-md-block">
-          <img src={logimg.src} className="w-100 reg-img" />
+          <Image
+            src={logimg.src}
+            className="w-100 reg-img"
+            alt=""
+            width={0}
+            height={0}
+            unoptimized
+          />
         </Col>
         <Col
           className="col-lg-6 col-md-6 col-sm-12 col-12 d-flex flex-column"
           id="loginSection"
         >
-          <img src={logo.src} className="register-logo" />
+          <Image
+            src={logo.src}
+            className="register-logo"
+            alt="logo"
+            width={0}
+            height={0}
+            unoptimized
+          />
           <div className="loginHeaderText">
             <h2>Log in</h2>
             <p>Continue your Canadian Immigration Journey</p>
@@ -118,9 +132,9 @@ export default function Page() {
             </Button>
 
             <p className="mt-3 text-center">
-              Don't have an account ?{" "}
+              Don't have an account ?
               <a href="/register">
-                <span className="blue-text bold">Sign up</span>
+                <span className="blue-text bold"> Sign up</span>
               </a>
             </p>
           </Form>

@@ -46,7 +46,14 @@ const Sidebar = ({
           {!collapsed && (
             <span className="whitespace-nowrap">
               {" "}
-              <img src={logoMark.src} className="h-auto w-16 rounded-full" />
+              <Image
+                src={logoMark.src}
+                className="h-auto w-16 rounded-full"
+                alt="logomark"
+                width={0}
+                height={0}
+                unoptimized
+              />
             </span>
           )}
           <button

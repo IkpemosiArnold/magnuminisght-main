@@ -8,7 +8,7 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
-
+import Image from "next/image";
 //style
 import "../formstyles.css";
 
@@ -60,14 +60,27 @@ export default function Page() {
     <Container fluid id="registerContainer">
       <Row>
         <Col className="col-lg-6 col-md-6 col-sm-12 col-12 d-none d-md-block">
-          <img src={regimg.src} className="w-100 reg-img" />
+          <Image
+            src={regimg.src}
+            className="w-100 reg-img"
+            width={0}
+            height={0}
+            alt=" "
+            unoptimized
+          />
         </Col>
 
         <Col
           className="col-lg-6 col-md-6 col-sm-12 col-12 d-flex flex-column"
           id="registerSection"
         >
-          <img src={logo.src} className="register-logo" />
+          <Image
+            src={logo.src}
+            className="register-logo"
+            alt="logomark"
+            width={0}
+            height={0}
+          />
           <div className="registerHeaderText">
             <h2 className="text-center">Sign Up</h2>
             <p className="text-center">

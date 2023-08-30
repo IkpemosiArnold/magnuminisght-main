@@ -4,6 +4,7 @@ import React from "react";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import classNames from "classnames";
 import logo from "../../assets/LogoBlue.png";
+import Image from "next/image";
 
 const Navbar = (props) => {
   return (
@@ -15,7 +16,13 @@ const Navbar = (props) => {
       })}
     >
       <div className="text-lg libre-franklin">
-        <img src={logo.src} className="w-[64px] h-auto" />
+        <Image
+          src={logo.src}
+          className="w-[64px] h-auto"
+          alt="MagnumInsight Logo"
+          width={64}
+          height={64}
+        />
       </div>
       <div className="flex-grow"></div>
       <button className="md:hidden" onClick={props.onMenuButtonClick}>
