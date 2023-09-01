@@ -122,9 +122,9 @@ const Step3 = () => (
         <InputGroup className="mb-3" controlid="formBasicOccupation">
           <Form.Control name="occupation" id="occupation" />
         </InputGroup>
-        <button className="custom-button" type="submit">
+        <Button variant="primary" className="custom-button" type="submit">
           Submit
-        </button>
+        </Button>
       </div>
     </Col>
   </Row>
