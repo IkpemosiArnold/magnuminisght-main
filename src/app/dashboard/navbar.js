@@ -26,7 +26,7 @@ const Navbar = (props) => {
       </div>
       <div className="flex-grow"></div>
       <button className="md:hidden" onClick={props.onMenuButtonClick}>
-        <Bars3Icon className="h-6 w-6" />
+        TOGGLE SIDEBAR
       </button>
     </nav>
   );
