@@ -32,14 +32,18 @@ export default function Dashboard() {
           <p>Study Assessment </p>
           <ArrowRightIcon className="w-6 h-6" />
         </div>
-        <div className="service-box">
-          <p>Visitors Visa</p>
-          <ArrowRightIcon className="w-6 h-6" />
-        </div>
-        <div className="service-box">
-          <p>Work Permit</p>
-          <ArrowRightIcon className="w-6 h-6" />
-        </div>
+        <Link href="/dashboard/applications/visitorsvisa">
+          <div className="service-box">
+            <p>Visitors Visa</p>
+            <ArrowRightIcon className="w-6 h-6" />
+          </div>
+        </Link>
+        <Link href="/dashboard/applications/workpermit">
+          <div className="service-box">
+            <p>Work Permit</p>
+            <ArrowRightIcon className="w-6 h-6" />
+          </div>
+        </Link>
       </div>
       <div className="grid gap-2 md:grid-cols-2 lg:grid-cols-4 mt-12">
         <Card>

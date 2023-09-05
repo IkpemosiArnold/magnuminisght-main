@@ -28,43 +28,44 @@ export default function Workpermit() {
     register,
     handleSubmit,
     formState: { errors },
+    control,
   } = useForm({
     resolver: yupResolver(schema),
+    mode: "onBlur",
   });
-  const onSubmit = (data) => {
+  const onError = (errors, e) => console.log(errors, e);
+
+  const workPermitApply = (data) => {
+    alert("Teehee");
     console.log(data);
     console.log(errors);
+    console.log("Submitted");
   };
 
   const goToNextStep = () => setCurrentStep((step) => step + 1);
   const goToPreviousStep = () => setCurrentStep((step) => step - 1);
 
   const Step1 = () => (
-    <Row>
+    <>
       <h3 className=" text-center text-2xl blue-text font-medium">
         Personal Information
       </h3>
       {/* Personal Information Form Fields */}
       <FormInputGroup
-        as={Col}
-        md={6}
         labelText="Firstname"
         controlName="Firstname"
         placeholder="Enter your firstname"
         errors={errors}
-        {...register(`Firstname`)}
+        control={control}
       />
       <FormInputGroup
         labelText="Lastname"
         controlName="Lastname"
         placeholder="Enter your lastname"
         errors={errors}
-        {...register(`Lastname`)}
+        control={control}
       />
-      <Button variant="primary" className="custom-button" type="submit">
-        Submit
-      </Button>
-    </Row>
+    </>
   );
   const Step2 = () => (
     <Row>
@@ -110,7 +111,14 @@ export default function Workpermit() {
           animate="enter"
           exit="exit"
         >
-          <form onSubmit={handleSubmit(onSubmit)}>{steps[currentStep]}</form>
+          <Row>
+            <form onSubmit={handleSubmit(workPermitApply, onError)}>
+              {steps[currentStep]}
+              <Button variant="primary" className="custom-button" type="submit">
+                Submit
+              </Button>
+            </form>
+          </Row>
         </motion.div>
         <div className="mt-4 flex flex-row justify-center">
           {" "}
