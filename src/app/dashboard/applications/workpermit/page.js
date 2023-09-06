@@ -123,25 +123,25 @@ export default function Workpermit() {
   const Step2 = () => (
     <Row>
       {/* Test of English or French Proficiency Form Fields */}
-      // ...
+      <p>Test of English or French Proficiency Form Fields</p>
     </Row>
   );
   const Step3 = () => (
     <Row>
       {/* Education and Employment Profile Form Fields */}
-      // ...
+      <p>Education and Employment Profile Form Fields</p>
     </Row>
   );
   const Step4 = () => (
     <Row>
       {/* Spouse and Dependents Children Information Form Fields */}
-      // ...
+      <p>Spouse and Dependents Children Information Form Fields </p>
     </Row>
   );
   const Step5 = () => (
     <Row>
       {/* Others Form Fields */}
-      // ...
+      <p>Others</p>
     </Row>
   );
   const steps = [
