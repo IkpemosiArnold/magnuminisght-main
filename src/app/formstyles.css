@@ -53,7 +53,7 @@
   padding-right: 8%;
 }
 #loginForm > div > input,
-.register-input {
+#registerForm > div > input {
   border-right: none;
   padding-top: 16px;
   padding-bottom: 16px;
@@ -65,4 +65,5 @@
 }
 .valid-feedback {
   display: block !important;
+  color: red;
 }

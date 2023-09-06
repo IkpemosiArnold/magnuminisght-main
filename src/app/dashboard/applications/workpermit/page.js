@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Container, Form, Row, Col, Button } from "react-bootstrap";
 import FormInputGroup from "../FormInputGroup";
+import RadioButtonGroup from "../RadioInputGroup";
+import DateInput from "../DateInput";
 
 // Form validation
 import { useForm } from "react-hook-form";
@@ -19,6 +21,20 @@ export default function Workpermit() {
     .object({
       Firstname: yup.string().required(),
       Lastname: yup.string().required(),
+      email: yup
+        .string()
+        .email("Must be a valid email address")
+        .required("Email is required"),
+      confirmEmail: yup
+        .string()
+        .oneOf([yup.ref("email"), null], "Emails must match")
+        .required("Confirm Email is required"),
+      dateOfBirth: yup.date().required("Date of birth is required").nullable(),
+      placeOfBirth: yup.string().required("Place of birth is required"),
+      gender: yup
+        .string()
+        .oneOf(["Male", "Female"], "Gender is required")
+        .required(),
     })
     .required();
 
@@ -36,17 +52,14 @@ export default function Workpermit() {
   const onError = (errors, e) => console.log(errors, e);
 
   const workPermitApply = (data) => {
-    alert("Teehee");
     console.log(data);
-    console.log(errors);
-    console.log("Submitted");
   };
 
   const goToNextStep = () => setCurrentStep((step) => step + 1);
   const goToPreviousStep = () => setCurrentStep((step) => step - 1);
 
   const Step1 = () => (
-    <>
+    <Row>
       <h3 className=" text-center text-2xl blue-text font-medium">
         Personal Information
       </h3>
@@ -65,7 +78,47 @@ export default function Workpermit() {
         errors={errors}
         control={control}
       />
-    </>
+      <FormInputGroup
+        labelText="Email Address"
+        controlName="email"
+        placeholder="Enter your email address"
+        errors={errors}
+        control={control}
+        type="email"
+        className="col-md-6"
+      />
+      <FormInputGroup
+        labelText="Confirm your Email Address"
+        controlName="confirmEmail"
+        placeholder="Confirm your email address"
+        errors={errors}
+        control={control}
+        type="email"
+        className="col-md-6"
+      />
+      <DateInput
+        labelText="Please Enter your Date of Birth"
+        controlName="dateOfBirth"
+        control={control}
+        errors={errors}
+      />
+      <FormInputGroup
+        labelText="Place of Birth"
+        controlName="placeOfBirth"
+        control={control}
+        errors={errors}
+      />
+      <RadioButtonGroup
+        labelText="Gender"
+        options={[
+          { label: "Male", value: "Male" },
+          { label: "Female", value: "Female" },
+        ]}
+        controlName="gender"
+        control={control}
+        errors={errors}
+      />
+    </Row>
   );
   const Step2 = () => (
     <Row>
@@ -111,14 +164,16 @@ export default function Workpermit() {
           animate="enter"
           exit="exit"
         >
-          <Row>
-            <form onSubmit={handleSubmit(workPermitApply, onError)}>
-              {steps[currentStep]}
-              <Button variant="primary" className="custom-button" type="submit">
-                Submit
-              </Button>
-            </form>
-          </Row>
+          <form onSubmit={handleSubmit(workPermitApply, onError)}>
+            {steps[currentStep]}
+            <Button
+              variant="primary"
+              className="custom-button mt-2"
+              type="submit"
+            >
+              Submit
+            </Button>
+          </form>
         </motion.div>
         <div className="mt-4 flex flex-row justify-center">
           {" "}

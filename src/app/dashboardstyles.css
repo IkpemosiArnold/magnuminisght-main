@@ -21,11 +21,12 @@
   transition: transform 500ms ease-in-out;
 }
 
-input {
+.textInputs{
   padding-top: 20px !important;
   padding-bottom: 20px !important;
   background-color: lightblue !important;
 }
+.radioButtons{}
 .form-label {
   font-weight: 500;
 }

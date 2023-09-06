@@ -1,7 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Alert from "react-bootstrap/Alert";
-import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -9,6 +7,10 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Image from "next/image";
+import { getUsers, setUsers } from "../Helpers";
+import { ToastContainer, toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import "react-toastify/dist/ReactToastify.css";
 //style
 import "../formstyles.css";
 
@@ -30,6 +32,7 @@ import { FaKey } from "react-icons/fa";
 import { BiSolidLockAlt } from "react-icons/bi";
 
 export default function Page() {
+  const router = useRouter();
   const validation = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -53,11 +56,23 @@ export default function Page() {
         .required("Confirm password is required"),
     }),
     onSubmit: (values) => {
-      dispatch(registerUser(values));
+      const currentUsers = getUsers();
+      const isAlreadyRegistered = currentUsers.some(
+        (user) => user.email === values.email
+      );
+
+      if (isAlreadyRegistered) {
+        toast("User already registered");
+      } else {
+        setUsers(values);
+        toast("Registration successful");
+        router.push("/login");
+      }
     },
   });
   return (
     <Container fluid id="registerContainer">
+      <ToastContainer />
       <Row>
         <Col className="col-lg-6 col-md-6 col-sm-12 col-12 d-none d-md-block">
           <Image
@@ -82,7 +97,7 @@ export default function Page() {
             height={0}
           />
           <div className="registerHeaderText">
-            <h2 className="text-center">Sign Up</h2>
+            <h2 className="text-center text-2xl">Sign Up</h2>
             <p className="text-center">
               Get Started on your Canadian immigration Journey by entering
             </p>
@@ -96,7 +111,7 @@ export default function Page() {
             id="registerForm"
           >
             <Form.Label htmlFor="firstname">First Name</Form.Label>
-            <InputGroup className="mb-3 register-input" controlId="firstname">
+            <InputGroup className="mb-3 register-input" controlid="firstname">
               <Form.Control
                 name="firstname"
                 placeholder="Jane"
@@ -116,7 +131,7 @@ export default function Page() {
               )}
             </InputGroup>
             <Form.Label htmlFor="lastname">Last Name</Form.Label>
-            <InputGroup className="mb-3 register-input" controlId="lastname">
+            <InputGroup className="mb-3 register-input" controlid="lastname">
               <Form.Control
                 name="lastname"
                 placeholder="Doe"
@@ -136,7 +151,7 @@ export default function Page() {
               )}
             </InputGroup>
             <Form.Label htmFor="email">Email</Form.Label>
-            <InputGroup className="mb-3 register-input" controlId="email">
+            <InputGroup className="mb-3 register-input" controlid="email">
               <Form.Control
                 type="email"
                 name="email"
@@ -157,7 +172,7 @@ export default function Page() {
               )}
             </InputGroup>
             <Form.Label htmlfor="password">Password</Form.Label>
-            <InputGroup className="mb-3 register-input" controlId="password">
+            <InputGroup className="mb-3 register-input" controlid="password">
               <Form.Control
                 type="password"
                 name="password"
@@ -180,7 +195,7 @@ export default function Page() {
             <Form.Label htmlFor="confirmpassword">Confirm Password</Form.Label>
             <InputGroup
               className="mb-3 register-input"
-              controlId="confirmPassword"
+              controlid="confirmPassword"
             >
               <Form.Control
                 type="password"

@@ -1,7 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Alert from "react-bootstrap/Alert";
-import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -9,6 +7,10 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Image from "next/image";
+import { getUsers, setUsers } from "../Helpers";
+import { ToastContainer, toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import "react-toastify/dist/ReactToastify.css";
 //style
 import "../formstyles.css";
 
@@ -27,25 +29,38 @@ import { MdEmail } from "react-icons/md";
 import { BiSolidLockAlt } from "react-icons/bi";
 
 export default function Page() {
-  const [userLogin, setUserLogin] = useState([]);
+  const router = useRouter();
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
 
     initialValues: {
-      email: userLogin.email || "newuser@gmail.com" || "",
-      password: userLogin.password || "123456" || "",
+      email: "",
+      password: "",
     },
     validationSchema: Yup.object({
       email: Yup.string().required("Please Enter Your Email"),
       password: Yup.string().required("Please Enter Your Password"),
     }),
     onSubmit: (values) => {
-      dispatch(loginUser(values, props.router.navigate));
+      const users = getUsers(); // getUsers is a helper function
+      const user = users.find(
+        (user) =>
+          user.email === values.email && user.password === values.password
+      );
+
+      if (user) {
+        toast("Login successful");
+        localStorage.setItem("loggedInUser", JSON.stringify(user));
+        router.push("/dashboard");
+      } else {
+        toast("Invalid credentials");
+      }
     },
   });
   return (
     <Container fluid id="loginContainer">
+      <ToastContainer />
       <Row>
         <Col className="col-lg-6 col-md-6 col-sm-12 col-12 d-none d-md-block">
           <Image
@@ -70,7 +85,7 @@ export default function Page() {
             unoptimized
           />
           <div className="loginHeaderText">
-            <h2>Log in</h2>
+            <h2 className="text-2xl">Log in</h2>
             <p>Continue your Canadian Immigration Journey</p>
           </div>
 
@@ -80,7 +95,7 @@ export default function Page() {
             className="mt-40"
           >
             <Form.Label htmlFor="email">Email</Form.Label>
-            <InputGroup className="mb-3" controlId="formBasicEmail">
+            <InputGroup className="mb-3" controlid="formBasicEmail">
               <Form.Control
                 type="email"
                 id="email"
@@ -100,7 +115,7 @@ export default function Page() {
               ) : null}
             </InputGroup>
             <Form.Label htmlFor="password">Password</Form.Label>
-            <InputGroup className="mb-3" controlId="formBasicPassword">
+            <InputGroup className="mb-3" controlid="formBasicPassword">
               <Form.Control
                 type="password"
                 id="password"

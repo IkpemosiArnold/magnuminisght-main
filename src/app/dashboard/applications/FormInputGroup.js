@@ -10,24 +10,33 @@ export default function FormInputGroup({
   placeholder,
   errors,
   control,
+  type,
 }) {
   return (
     <>
-      <Form.Label htmlFor={controlName}>{labelText}</Form.Label>
-      <InputGroup className="mb-3" controlId={`formBasic${controlName}`}>
+      <Form.Label className="mt-4" htmlFor={controlName}>
+        {labelText}
+      </Form.Label>
+      <InputGroup controlid={`formBasic${controlName}`}>
         <Controller
           name={controlName}
           render={({ field }) => (
-            <div className="w-100">
-              <Form.Control {...field} placeholder={placeholder} />
-              {errors && errors[controlName] && (
-                <p>{errors[controlName].message}</p>
-              )}
-            </div>
+            <Form.Control
+              {...field}
+              placeholder={placeholder}
+              type={type ? type : "text"}
+              className="textInputs"
+            />
           )}
           control={control}
+          defaultValue=""
         />
       </InputGroup>
+      {errors && errors[controlName] && (
+        <div style={{ display: "block", color: "red" }}>
+          <p>{errors[controlName].message}</p>
+        </div>
+      )}
     </>
   );
 }
