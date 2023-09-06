@@ -10,6 +10,8 @@ import {
 } from "@heroicons/react/24/outline";
 import { defaultNavItems, NavItem } from "./defaultNavItems";
 import logoMark from "../../assets/MagnumAi.jpg";
+import { useRouter } from "next/navigation";
+import { Button } from "react-bootstrap";
 // 👇 props to get and set the collapsed state from parent component
 
 const Sidebar = ({
@@ -20,6 +22,8 @@ const Sidebar = ({
 }) => {
   // 👇 use the correct icon depending on the state.
   const Icon = collapsed ? ChevronDoubleRightIcon : ChevronDoubleLeftIcon;
+  const router = useRouter();
+
   return (
     <div
       className={classNames({
@@ -96,10 +100,17 @@ const Sidebar = ({
           <div className="flex gap-4 items-center h-11 overflow-hidden">
             {!collapsed && (
               <div className="flex flex-col ">
-                <span className="text-indigo-50 my-0">contact us</span>
-                <Link href="/" className="text-indigo-200 text-sm">
-                  hello@MagnumInsights.com
-                </Link>
+                <Button
+                  className="custom-button"
+                  variant="primary"
+                  onClick={() => {
+                    const loggedoutUser =
+                      localStorage.removeItem("loggedInUser");
+                    router.push("/login");
+                  }}
+                >
+                  Log out
+                </Button>
               </div>
             )}
           </div>

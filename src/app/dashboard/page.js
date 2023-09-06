@@ -23,7 +23,7 @@ export default function Dashboard() {
     const loggedInUser = localStorage.getItem("loggedInUser");
     if (loggedInUser) {
       setUser(JSON.parse(loggedInUser));
-    } else {
+    } else if (!loggedInUser) {
       router.push("/login");
     }
   }, []);

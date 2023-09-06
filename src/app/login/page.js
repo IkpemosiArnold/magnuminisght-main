@@ -141,7 +141,7 @@ export default function Page() {
               type="submit"
               className="custom-button w-100"
             >
-              Login
+              Log in
             </Button>
             <p className="mt-3 text-center">
               {`Don't have an account ?`}
