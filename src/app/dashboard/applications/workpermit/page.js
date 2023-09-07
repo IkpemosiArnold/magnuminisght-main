@@ -16,7 +16,7 @@ export default function Workpermit() {
     exit: { opacity: 0, x: "-100vw" },
     enter: { opacity: 1, x: "0" },
   };
-
+  ////YUP SCHEMA------------------------
   const schema = yup
     .object({
       Firstname: yup.string().required(),
@@ -35,16 +35,157 @@ export default function Workpermit() {
         .string()
         .oneOf(["Male", "Female"], "Gender is required")
         .required(),
+      countryOfCitizenship: yup
+        .string()
+        .required("Country of Citizenship is required"),
+      countryOfResidence: yup
+        .string()
+        .required("Country of Residence is required"),
+      hasValidPassport: yup
+        .string()
+        .oneOf(["Yes", "No"], "Answer is required")
+        .required(),
+      expirationDate: yup.date().when("hasValidPassport", {
+        is: "Yes",
+        then: () => yup.date().nullable(),
+      }),
+      isIELTSTaken: yup
+        .string()
+        .oneOf(["Yes", "No"], "Answer is required")
+        .required(),
+      testDate: yup.date().when("isIELTSTaken", {
+        is: "Yes",
+        then: () => yup.date().nullable().required("Test date is required"),
+      }),
+      writingScore: yup.string().when("isIELTSTaken", {
+        is: "Yes",
+        then: () => yup.string().required("Writing score is required"),
+      }),
+      speakingScore: yup.string().when("isIELTSTaken", {
+        is: "Yes",
+        then: () => yup.string().required("Speaking score is required"),
+      }),
+      listeningScore: yup.string().when("isIELTSTaken", {
+        is: "Yes",
+        then: () => yup.string().required("Listening score is required"),
+      }),
+      readingScore: yup.string().when("isIELTSTaken", {
+        is: "Yes",
+        then: () => yup.string().required("Reading score is required"),
+      }),
+      testType: yup.string().when("isIELTSTaken", {
+        is: "Yes",
+        then: () =>
+          yup
+            .string()
+            .oneOf(["General", "Academic"], "Selection is required")
+            .required("Test type is required"),
+      }),
+      isOtherLanguageResults: yup
+        .string()
+        .oneOf(["Yes", "No"], "Answer is required")
+        .required(),
+      languageResults: yup.string().when("isOtherLanguageResults", {
+        is: "Yes",
+        then: () => yup.string().required("Please indicate"),
+      }),
+      highestLevelOfEducation: yup.string().required("This field is required"),
+      earnedHighestDegreeCountry: yup
+        .string()
+        .required("This field is required"),
+      currentProfession: yup.string().required("This field is required"),
+      currentJobTitle: yup.string().required("This field is required"),
+      yearsOfWorkExperience: yup
+        .number()
+        .required("This field is required")
+        .positive()
+        .integer(),
+      hasCredentialEvaluation: yup
+        .string()
+        .oneOf(["Yes", "No"], "Answer is required")
+        .required(),
+      credentialEvaluationDate: yup.date().when("hasCredentialEvaluation", {
+        is: "Yes",
+        then: () => yup.date().nullable().required("Date is required"),
+      }),
+      maritalStatus: yup
+        .string()
+        .oneOf(["Single", "Married", "Divorced", "Widowed", "Separated"])
+        .required(),
+
+      spouseDateOfBirth: yup.date().when("maritalStatus", {
+        is: (value) => value !== "Single",
+        then: (schema) => schema.required("Spouse date of birth is required"),
+      }),
+
+      spouseCountryOfResidence: yup.string().when("maritalStatus", {
+        is: (value) => value !== "Single",
+        then: (schema) =>
+          schema.required("Spouse country of residence is required"),
+      }),
+
+      spouseCountryOfCitizenship: yup.string().when("maritalStatus", {
+        is: (value) => value !== "Single",
+        then: (schema) =>
+          schema.required("Spouse country of citizenship is required"),
+      }),
+
+      spouseEducationLevel: yup.string().when("maritalStatus", {
+        is: (value) => value !== "Single",
+        then: (schema) => schema.required("Spouse education level is required"),
+      }),
+
+      spouseLanguageTestTaken: yup
+        .string()
+        .oneOf(["Yes", "No"])
+        .when("maritalStatus", {
+          is: (value) => value !== "Single",
+          then: (schema) =>
+            schema.required("Indicate if spouse took a language test"),
+        }),
+
+      spouseLanguageTestType: yup
+        .string()
+        .when("spouseLanguageTestTaken", {
+          is: "Yes",
+          then: (schema) => schema.required("Spouse test type is required"),
+        })
+        .oneOf(["General", "Academic"]),
+
+      spouseLanguageTestScores: yup.object().shape({
+        writing: yup.number().when("spouseLanguageTestTaken", {
+          is: "Yes",
+          then: (schema) => schema.required("Writing score is required"),
+        }),
+        speaking: yup.number().when("spouseLanguageTestTaken", {
+          is: "Yes",
+          then: (schema) => schema.required("Speaking score is required"),
+        }),
+        listening: yup.number().when("spouseLanguageTestTaken", {
+          is: "Yes",
+          then: (schema) => schema.required("Listening score is required"),
+        }),
+        reading: yup.number().when("spouseLanguageTestTaken", {
+          is: "Yes",
+          then: (schema) => schema.required("Reading score is required"),
+        }),
+      }),
+      dependentKids: yup.string().oneOf(["Yes", "No"]).required(),
+
+      numberOfKids: yup.number().when("dependentKids", {
+        is: "Yes",
+        then: (schema) => schema.required("Required"),
+      }),
     })
     .required();
 
   const [currentStep, setCurrentStep] = useState(0);
 
   const {
-    register,
     handleSubmit,
     formState: { errors },
     control,
+    watch,
   } = useForm({
     resolver: yupResolver(schema),
     mode: "onBlur",
@@ -118,24 +259,221 @@ export default function Workpermit() {
         control={control}
         errors={errors}
       />
+      <FormInputGroup
+        labelText="Country of Citizenship"
+        controlName="CountryofCitizenship"
+        placeholder="Enter your Country of Citizenship"
+        errors={errors}
+        control={control}
+      />
+      <FormInputGroup
+        labelText="Country of Residence"
+        controlName="CountryofResidence"
+        placeholder="Enter your Country of Residence"
+        errors={errors}
+        control={control}
+      />
+      <RadioButtonGroup
+        labelText="Do you have a valid passport?"
+        options={[
+          { label: "Yes", value: "Yes" },
+          { label: "No", value: "No" },
+        ]}
+        controlName="hasValidPassport"
+        control={control}
+        errors={errors}
+      />
+      {watch("hasValidPassport") === "Yes" && (
+        <DateInput
+          labelText="Expiration date"
+          controlName="expirationDate"
+          control={control}
+          errors={errors}
+        />
+      )}
     </Row>
   );
   const Step2 = () => (
     <Row>
       {/* Test of English or French Proficiency Form Fields */}
-      <p>Test of English or French Proficiency Form Fields</p>
+      <h3 className=" text-center text-2xl blue-text font-medium mb-4">
+        Test of English or French Proficiency Form Fields
+      </h3>
+
+      <RadioButtonGroup
+        labelText="Have you taken the International English Language Testing System (IELTS)?"
+        options={[
+          { label: "Yes", value: "Yes" },
+          { label: "No", value: "No" },
+        ]}
+        controlName="isIELTSTaken"
+        control={control}
+        errors={errors}
+      />
+      {watch("isIELTSTaken") === "Yes" && (
+        <>
+          <DateInput
+            labelText="Kindly provide your test date"
+            controlName="testDate"
+            control={control}
+            errors={errors}
+          />
+          <FormInputGroup
+            labelText="Writing Score"
+            controlName="writingScore"
+            control={control}
+            errors={errors}
+          />
+          <FormInputGroup
+            labelText="Speaking Score"
+            controlName="speakingScore"
+            control={control}
+            errors={errors}
+          />
+          <FormInputGroup
+            labelText="Listening Score"
+            controlName="listeningScore"
+            control={control}
+            errors={errors}
+          />
+          <FormInputGroup
+            labelText="Reading Score"
+            controlName="readingScore"
+            control={control}
+            errors={errors}
+          />
+          <RadioButtonGroup
+            labelText="Which test type did you take?"
+            options={[
+              { label: "General", value: "General" },
+              { label: "Academic", value: "Academic" },
+            ]}
+            controlName="testType"
+            control={control}
+            errors={errors}
+          />
+          <RadioButtonGroup
+            labelText="Do you have other language results?"
+            options={[
+              { label: "Yes", value: "Yes" },
+              { label: "No", value: "No" },
+            ]}
+            controlName="isOtherLanguageResults"
+            control={control}
+            errors={errors}
+          />
+          {watch("isOtherLanguageResults") === "Yes" && (
+            <FormInputGroup
+              labelText="Kindly Indicate"
+              controlName="languageResults"
+              control={control}
+              errors={errors}
+            />
+          )}
+        </>
+      )}
     </Row>
   );
   const Step3 = () => (
     <Row>
       {/* Education and Employment Profile Form Fields */}
-      <p>Education and Employment Profile Form Fields</p>
+      <h3 className=" text-center text-2xl blue-text font-medium mb-4">
+        Education and Employment Profile Form Fields
+      </h3>
+      <FormInputGroup
+        labelText="Highest Level of Education"
+        controlName="highestLevelOfEducation"
+        placeholder="Enter your highest level of education"
+        errors={errors}
+        control={control}
+      />
+      <FormInputGroup
+        labelText="Country of attained Highest Degree"
+        controlName="earnedHighestDegreeCountry"
+        placeholder="Enter country you earned your highest degree"
+        errors={errors}
+        control={control}
+      />
+      <FormInputGroup
+        labelText="Current Profession"
+        controlName="currentProfession"
+        placeholder="Enter your current profession"
+        errors={errors}
+        control={control}
+      />
+      <FormInputGroup
+        labelText="Current Job Title"
+        controlName="currentJobTitle"
+        placeholder="Enter your current job title"
+        errors={errors}
+        control={control}
+      />
+      <FormInputGroup
+        labelText="Number of years of work experience"
+        controlName="yearsOfWorkExperience"
+        placeholder="Enter number of years of your work experience"
+        type="number"
+        errors={errors}
+        control={control}
+      />
+      <RadioButtonGroup
+        labelText="Have you evaluated your transcript with World Education Services (WES) or any other similar credential evaluation services?"
+        options={[
+          { label: "Yes", value: "Yes" },
+          { label: "No", value: "No" },
+        ]}
+        controlName="hasCredentialEvaluation"
+        control={control}
+        errors={errors}
+      />
+      {watch("hasCredentialEvaluation") === "Yes" && (
+        <DateInput
+          labelText="Evaluation Date"
+          controlName="credentialEvaluationDate"
+          control={control}
+          errors={errors}
+        />
+      )}
     </Row>
   );
   const Step4 = () => (
     <Row>
-      {/* Spouse and Dependents Children Information Form Fields */}
-      <p>Spouse and Dependents Children Information Form Fields </p>
+      <h3 className=" text-center text-2xl blue-text font-medium mb-4">
+        {`  Spouse and Dependent Children’s Information`}
+      </h3>
+
+      <RadioButtonGroup
+        labelText="Marital Status"
+        options={[
+          { label: "Single", value: "Single" },
+          { label: "Married", value: "Married" },
+          { label: "Divorced", value: "Divorced" },
+          { label: "Widowed", value: "Widowed" },
+          { label: "Separated", value: "Separated" },
+        ]}
+        controlName="maritalStatus"
+        control={control}
+        errors={errors}
+      />
+
+      {watch("maritalStatus") !== "Single" && (
+        <>
+          <DateInput
+            labelText="Spouse's Date of Birth"
+            controlName="spouseDateOfBirth"
+            control={control}
+            errors={errors}
+          />
+          <FormInputGroup
+            labelText="Spouse's Country of Residence"
+            controlName="spouseCountryOfResidence"
+            control={control}
+            errors={errors}
+          />
+          {/* Other fields */}
+        </>
+      )}
+      {/* Other fields */}
     </Row>
   );
   const Step5 = () => (
