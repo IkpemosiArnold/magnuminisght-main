@@ -30,8 +30,11 @@ import { PiIdentificationCardFill } from "react-icons/pi";
 import { MdEmail } from "react-icons/md";
 import { FaKey } from "react-icons/fa";
 import { BiSolidLockAlt } from "react-icons/bi";
+import { RxEyeOpen, RxEyeClosed } from "react-icons/rx";
 
 export default function Page() {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const router = useRouter();
   const validation = useFormik({
     enableReinitialize: true,
@@ -171,10 +174,10 @@ export default function Page() {
                 </Form.Control.Feedback>
               )}
             </InputGroup>
-            <Form.Label htmlfor="password">Password</Form.Label>
+            <Form.Label htmlFor="password">Password</Form.Label>
             <InputGroup className="mb-3 register-input" controlid="password">
               <Form.Control
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 placeholder="**************"
                 value={validation.values.password}
@@ -182,9 +185,12 @@ export default function Page() {
                 onBlur={validation.handleBlur}
                 isInvalid={!!validation.errors.password}
               />
-              <InputGroup.Text className="register-addons">
+              <InputGroup.Text
+                className="register-addons"
+                onClick={() => setShowPassword(!showPassword)}
+              >
                 {" "}
-                <FaKey />
+                {showPassword ? <RxEyeOpen /> : <RxEyeClosed />}
               </InputGroup.Text>
               {validation.errors.password && (
                 <Form.Control.Feedback>
@@ -198,7 +204,7 @@ export default function Page() {
               controlid="confirmPassword"
             >
               <Form.Control
-                type="password"
+                type={showConfirmPassword ? "text" : "password"}
                 placeholder="**************"
                 name="confirmpassword"
                 value={validation.values.confirmpassword}
@@ -206,9 +212,12 @@ export default function Page() {
                 onBlur={validation.handleBlur}
                 isInvalid={!!validation.errors.confirmpassword}
               />
-              <InputGroup.Text className="register-addons">
+              <InputGroup.Text
+                className="register-addons"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              >
                 {" "}
-                <BiSolidLockAlt />
+                {showConfirmPassword ? <RxEyeOpen /> : <RxEyeClosed />}
               </InputGroup.Text>
               {validation.errors.confirmpassword && (
                 <Form.Control.Feedback>

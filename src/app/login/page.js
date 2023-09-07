@@ -27,8 +27,10 @@ import logo from "../../assets/MagnumAi.jpg";
 import logimg from "../../assets/login-page-img.jpg";
 import { MdEmail } from "react-icons/md";
 import { BiSolidLockAlt } from "react-icons/bi";
+import { RxEyeOpen, RxEyeClosed } from "react-icons/rx";
 
 export default function Page() {
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
@@ -115,26 +117,28 @@ export default function Page() {
               ) : null}
             </InputGroup>
             <Form.Label htmlFor="password">Password</Form.Label>
-            <InputGroup className="mb-3" controlid="formBasicPassword">
+            <InputGroup className="mb-3 register-input" controlid="password">
               <Form.Control
-                type="password"
-                id="password"
+                type={showPassword ? "text" : "password"}
+                name="password"
                 placeholder="**************"
                 value={validation.values.password}
                 onChange={validation.handleChange}
-                isValid={
-                  validation.touched.password && !validation.errors.password
-                }
+                onBlur={validation.handleBlur}
                 isInvalid={!!validation.errors.password}
               />
-              <InputGroup.Text className="register-addons">
-                <BiSolidLockAlt />
+              <InputGroup.Text
+                className="register-addons"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {" "}
+                {showPassword ? <RxEyeOpen /> : <RxEyeClosed />}
               </InputGroup.Text>
-              {validation.touched.password && validation.errors.password ? (
-                <Form.Control.Feedback type="invalid">
+              {validation.errors.password && (
+                <Form.Control.Feedback>
                   {validation.errors.password}
                 </Form.Control.Feedback>
-              ) : null}
+              )}
             </InputGroup>
             <Button
               variant="primary"
