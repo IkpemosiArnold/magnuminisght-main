@@ -176,6 +176,32 @@ export default function Workpermit() {
         is: "Yes",
         then: (schema) => schema.required("Required"),
       }),
+      hasCanadianRelativeOrFriend: yup
+        .string()
+        .oneOf(["Yes", "No"])
+        .required("Please specify if you have a relative or friend in Canada"),
+      relationshipWithCanadianRelativeOrFriend: yup
+        .string()
+        .when("hasCanadianRelativeOrFriend", {
+          is: "Yes",
+          then: () =>
+            yup.string().required("Nature of the relationship is required"),
+        }),
+      provinceOfResidenceOfRelativeOrFriend: yup
+        .string()
+        .when("hasCanadianRelativeOrFriend", {
+          is: true,
+          then: () =>
+            yup.string().required("Province of residence is required"),
+        }),
+      hasNominationCertificate: yup
+        .string()
+        .oneOf(["Yes", "No"])
+        .required("Please specify if you have a nomination certificate"),
+      nominationReceivedDate: yup.date().when("hasNominationCertificate", {
+        is: "Yes",
+        then: () => yup.date().required("Nomination received date is required"),
+      }),
     })
     .required();
 
@@ -444,36 +470,190 @@ export default function Workpermit() {
 
       <RadioButtonGroup
         labelText="Marital Status"
-        options={[
-          { label: "Single", value: "Single" },
-          { label: "Married", value: "Married" },
-          { label: "Divorced", value: "Divorced" },
-          { label: "Widowed", value: "Widowed" },
-          { label: "Separated", value: "Separated" },
-        ]}
         controlName="maritalStatus"
+        options={[
+          { value: "Single", label: "Single" },
+          { value: "Married", label: "Married" },
+          { value: "Divorced", label: "Divorced" },
+          { value: "Widowed", label: "Widowed" },
+          { value: "Separated", label: "Separated" },
+        ]}
+        placeholder="Select Marital Status"
         control={control}
         errors={errors}
       />
 
-      {watch("maritalStatus") !== "Single" && (
-        <>
-          <DateInput
-            labelText="Spouse's Date of Birth"
-            controlName="spouseDateOfBirth"
-            control={control}
-            errors={errors}
-          />
+      {watch("maritalStatus") !== "Single" &&
+        watch("maritalStatus") != undefined && (
+          <>
+            <DateInput
+              labelText="Spouse Date of Birth"
+              controlName="spouseDateOfBirth"
+              control={control}
+              errors={errors}
+            />
+
+            <FormInputGroup
+              labelText="Spouse Country of Residence"
+              controlName="spouseCountryOfResidence"
+              control={control}
+              errors={errors}
+            />
+
+            <FormInputGroup
+              labelText="Spouse Country of Citizenship"
+              controlName="spouseCountryOfCitizenship"
+              control={control}
+              errors={errors}
+            />
+
+            <RadioButtonGroup
+              labelText="Spouse Education Level"
+              controlName="spouseEducationLevel"
+              options={[
+                { value: "High School", label: "High School" },
+                { value: "College", label: "College" },
+                { value: "Bachelors", label: "Bachelors" },
+                { value: "Masters", label: "Masters" },
+                { value: "PhD", label: "PhD" },
+              ]}
+              placeholder="Select Education Level"
+              control={control}
+              errors={errors}
+            />
+
+            <RadioButtonGroup
+              labelText="Has your spouse taken a language test?"
+              options={[
+                { label: "Yes", value: "Yes" },
+                { label: "No", value: "No" },
+              ]}
+              controlName="spouseLanguageTestTaken"
+              control={control}
+              errors={errors}
+            />
+
+            {watch("spouseLanguageTestTaken") === "Yes" && (
+              <>
+                <RadioButtonGroup
+                  labelText="Spouse Language Test Type"
+                  controlName="spouseLanguageTestType"
+                  options={[
+                    { value: "General", label: "General" },
+                    { value: "Academic", label: "Academic" },
+                  ]}
+                  placeholder="Select Test Type"
+                  control={control}
+                  errors={errors}
+                />
+
+                <FormInputGroup
+                  labelText="Spouse Writing Score"
+                  controlName="spouseLanguageTestScores.writing"
+                  type="number"
+                  control={control}
+                  errors={errors}
+                />
+
+                <FormInputGroup
+                  labelText="Spouse Speaking Score"
+                  controlName="spouseLanguageTestScores.speaking"
+                  type="number"
+                  control={control}
+                  errors={errors}
+                />
+
+                <FormInputGroup
+                  labelText="Spouse Listening Score"
+                  controlName="spouseLanguageTestScores.listening"
+                  type="number"
+                  control={control}
+                  errors={errors}
+                />
+
+                <FormInputGroup
+                  labelText="Spouse Reading Score"
+                  controlName="spouseLanguageTestScores.reading"
+                  type="number"
+                  control={control}
+                  errors={errors}
+                />
+              </>
+            )}
+          </>
+        )}
+      <RadioButtonGroup
+        labelText="Do you have dependent children?"
+        options={[
+          { label: "Yes", value: "Yes" },
+          { label: "No", value: "No" },
+        ]}
+        controlName="dependentKids"
+        control={control}
+        errors={errors}
+      />
+
+      {watch("dependentKids") === "Yes" &&
+        watch("dependentKids") != undefined && (
           <FormInputGroup
-            labelText="Spouse's Country of Residence"
-            controlName="spouseCountryOfResidence"
+            labelText="Number of dependent children"
+            controlName="numberOfKids"
+            type="number"
             control={control}
             errors={errors}
           />
-          {/* Other fields */}
-        </>
-      )}
-      {/* Other fields */}
+        )}
+
+      <RadioButtonGroup
+        labelText="Do you have a relative or friend in Canada?"
+        options={[
+          { label: "Yes", value: "Yes" },
+          { label: "No", value: "No" },
+        ]}
+        controlName="hasCanadianRelativeOrFriend"
+        control={control}
+        errors={errors}
+      />
+
+      {watch("hasCanadianRelativeOrFriend") === "Yes" &&
+        watch("hasCanadianRelativeOrFriend") != undefined && (
+          <>
+            <FormInputGroup
+              labelText="Relationship to Canadian resident"
+              controlName="relationshipWithCanadianRelativeOrFriend"
+              control={control}
+              errors={errors}
+            />
+
+            <FormInputGroup
+              labelText="Province of residence of relative/friend"
+              controlName="provinceOfResidenceOfRelativeOrFriend"
+              control={control}
+              errors={errors}
+            />
+          </>
+        )}
+
+      <RadioButtonGroup
+        labelText="Do you have a nomination certificate?"
+        options={[
+          { label: "Yes", value: "Yes" },
+          { label: "No", value: "No" },
+        ]}
+        controlName="hasNominationCertificate"
+        control={control}
+        errors={errors}
+      />
+
+      {watch("hasNominationCertificate") === "Yes" &&
+        watch("hasNominationCertificate") != undefined && (
+          <DateInput
+            labelText="Nomination Certificate Received Date"
+            controlName="nominationReceivedDate"
+            control={control}
+            errors={errors}
+          />
+        )}
     </Row>
   );
   const Step5 = () => (
