@@ -226,435 +226,486 @@ export default function Express() {
   const goToPreviousStep = () => setCurrentStep((step) => step - 1);
 
   const Step1 = () => (
-    <Row>
+    <>
       <h3 className=" text-center text-2xl blue-text font-medium">
         Personal Information
       </h3>
-      {/* Personal Information Form Fields */}
-      <FormInputGroup
-        labelText="Firstname"
-        controlName="Firstname"
-        placeholder="Enter your firstname"
-        errors={errors}
-        control={control}
-      />
-      <FormInputGroup
-        labelText="Lastname"
-        controlName="Lastname"
-        placeholder="Enter your lastname"
-        errors={errors}
-        control={control}
-      />
-      <FormInputGroup
-        labelText="Email Address"
-        controlName="email"
-        placeholder="Enter your email address"
-        errors={errors}
-        control={control}
-        type="email"
-        className="col-md-6"
-      />
-      <FormInputGroup
-        labelText="Confirm your Email Address"
-        controlName="confirmEmail"
-        placeholder="Confirm your email address"
-        errors={errors}
-        control={control}
-        type="email"
-        className="col-md-6"
-      />
-      <DateInput
-        labelText="Please Enter your Date of Birth"
-        controlName="dateOfBirth"
-        control={control}
-        errors={errors}
-      />
-      <FormInputGroup
-        labelText="Place of Birth"
-        controlName="placeOfBirth"
-        control={control}
-        errors={errors}
-      />
-      <RadioButtonGroup
-        labelText="Gender"
-        options={[
-          { label: "Male", value: "Male" },
-          { label: "Female", value: "Female" },
-        ]}
-        controlName="gender"
-        control={control}
-        errors={errors}
-      />
-      <FormInputGroup
-        labelText="Country of Citizenship"
-        controlName="CountryofCitizenship"
-        placeholder="Enter your Country of Citizenship"
-        errors={errors}
-        control={control}
-      />
-      <FormInputGroup
-        labelText="Country of Residence"
-        controlName="CountryofResidence"
-        placeholder="Enter your Country of Residence"
-        errors={errors}
-        control={control}
-      />
-      <RadioButtonGroup
-        labelText="Do you have a valid passport?"
-        options={[
-          { label: "Yes", value: "Yes" },
-          { label: "No", value: "No" },
-        ]}
-        controlName="hasValidPassport"
-        control={control}
-        errors={errors}
-      />
-      {watch("hasValidPassport") === "Yes" && (
+      <Row className="flex flex-wrap">
+        {/* Personal Information Form Fields */}
+        <FormInputGroup
+          labelText="Firstname"
+          controlName="Firstname"
+          placeholder="Enter your firstname"
+          errors={errors}
+          control={control}
+          cssClasses="w-full sm:w-1/2"
+        />
+        <FormInputGroup
+          labelText="Lastname"
+          controlName="Lastname"
+          placeholder="Enter your lastname"
+          errors={errors}
+          control={control}
+          cssClasses="w-full sm:w-1/2"
+        />
+        <FormInputGroup
+          labelText="Email Address"
+          controlName="email"
+          placeholder="Enter your email address"
+          errors={errors}
+          control={control}
+          type="email"
+          cssClasses="w-full sm:w-1/2"
+        />
+        <FormInputGroup
+          labelText="Confirm your Email Address"
+          controlName="confirmEmail"
+          placeholder="Confirm your email address"
+          errors={errors}
+          control={control}
+          type="email"
+          cssClasses="w-full sm:w-1/2"
+        />
         <DateInput
-          labelText="Expiration date"
-          controlName="expirationDate"
+          labelText="Please Enter your Date of Birth"
+          controlName="dateOfBirth"
+          control={control}
+          errors={errors}
+          cssClasses="w-full sm:w-1/2"
+        />
+        <FormInputGroup
+          labelText="Place of Birth"
+          controlName="placeOfBirth"
+          control={control}
+          errors={errors}
+          cssClasses="w-full sm:w-1/2"
+        />
+        <RadioButtonGroup
+          labelText="Gender"
+          options={[
+            { label: "Male", value: "Male" },
+            { label: "Female", value: "Female" },
+          ]}
+          controlName="gender"
           control={control}
           errors={errors}
         />
-      )}
-    </Row>
+        <FormInputGroup
+          labelText="Country of Citizenship"
+          controlName="countryOfCitizenship"
+          placeholder="Enter your Country of Citizenship"
+          errors={errors}
+          control={control}
+          cssClasses="w-full sm:w-1/2"
+        />
+        <FormInputGroup
+          labelText="Country of Residence"
+          controlName="countryOfResidence"
+          placeholder="Enter your Country of Residence"
+          errors={errors}
+          control={control}
+          cssClasses="w-full sm:w-1/2"
+        />
+        <RadioButtonGroup
+          labelText="Do you have a valid passport?"
+          options={[
+            { label: "Yes", value: "Yes" },
+            { label: "No", value: "No" },
+          ]}
+          controlName="hasValidPassport"
+          control={control}
+          errors={errors}
+        />
+        {watch("hasValidPassport") === "Yes" && (
+          <DateInput
+            labelText="Expiration date"
+            controlName="expirationDate"
+            control={control}
+            errors={errors}
+          />
+        )}
+      </Row>
+    </>
   );
   const Step2 = () => (
-    <Row>
-      {/* Test of English or French Proficiency Form Fields */}
+    <>
       <h3 className=" text-center text-2xl blue-text font-medium mb-4">
         Test of English or French Proficiency Form Fields
       </h3>
+      <Row className="flex flex-wrap">
+        {/* Test of English or French Proficiency Form Fields */}
 
-      <RadioButtonGroup
-        labelText="Have you taken the International English Language Testing System (IELTS)?"
-        options={[
-          { label: "Yes", value: "Yes" },
-          { label: "No", value: "No" },
-        ]}
-        controlName="isIELTSTaken"
-        control={control}
-        errors={errors}
-      />
-      {watch("isIELTSTaken") === "Yes" && (
-        <>
-          <DateInput
-            labelText="Kindly provide your test date"
-            controlName="testDate"
-            control={control}
-            errors={errors}
-          />
-          <FormInputGroup
-            labelText="Writing Score"
-            controlName="writingScore"
-            control={control}
-            errors={errors}
-          />
-          <FormInputGroup
-            labelText="Speaking Score"
-            controlName="speakingScore"
-            control={control}
-            errors={errors}
-          />
-          <FormInputGroup
-            labelText="Listening Score"
-            controlName="listeningScore"
-            control={control}
-            errors={errors}
-          />
-          <FormInputGroup
-            labelText="Reading Score"
-            controlName="readingScore"
-            control={control}
-            errors={errors}
-          />
-          <RadioButtonGroup
-            labelText="Which test type did you take?"
-            options={[
-              { label: "General", value: "General" },
-              { label: "Academic", value: "Academic" },
-            ]}
-            controlName="testType"
-            control={control}
-            errors={errors}
-          />
-          <RadioButtonGroup
-            labelText="Do you have other language results?"
-            options={[
-              { label: "Yes", value: "Yes" },
-              { label: "No", value: "No" },
-            ]}
-            controlName="isOtherLanguageResults"
-            control={control}
-            errors={errors}
-          />
-          {watch("isOtherLanguageResults") === "Yes" && (
-            <FormInputGroup
-              labelText="Kindly Indicate"
-              controlName="languageResults"
-              control={control}
-              errors={errors}
-            />
-          )}
-        </>
-      )}
-    </Row>
-  );
-  const Step3 = () => (
-    <Row>
-      {/* Education and Employment Profile Form Fields */}
-      <h3 className=" text-center text-2xl blue-text font-medium mb-4">
-        Education and Employment Profile Form Fields
-      </h3>
-      <FormInputGroup
-        labelText="Highest Level of Education"
-        controlName="highestLevelOfEducation"
-        placeholder="Enter your highest level of education"
-        errors={errors}
-        control={control}
-      />
-      <FormInputGroup
-        labelText="Country of attained Highest Degree"
-        controlName="earnedHighestDegreeCountry"
-        placeholder="Enter country you earned your highest degree"
-        errors={errors}
-        control={control}
-      />
-      <FormInputGroup
-        labelText="Current Profession"
-        controlName="currentProfession"
-        placeholder="Enter your current profession"
-        errors={errors}
-        control={control}
-      />
-      <FormInputGroup
-        labelText="Current Job Title"
-        controlName="currentJobTitle"
-        placeholder="Enter your current job title"
-        errors={errors}
-        control={control}
-      />
-      <FormInputGroup
-        labelText="Number of years of work experience"
-        controlName="yearsOfWorkExperience"
-        placeholder="Enter number of years of your work experience"
-        type="number"
-        errors={errors}
-        control={control}
-      />
-      <RadioButtonGroup
-        labelText="Have you evaluated your transcript with World Education Services (WES) or any other similar credential evaluation services?"
-        options={[
-          { label: "Yes", value: "Yes" },
-          { label: "No", value: "No" },
-        ]}
-        controlName="hasCredentialEvaluation"
-        control={control}
-        errors={errors}
-      />
-      {watch("hasCredentialEvaluation") === "Yes" && (
-        <DateInput
-          labelText="Evaluation Date"
-          controlName="credentialEvaluationDate"
+        <RadioButtonGroup
+          labelText="Have you taken the International English Language Testing System (IELTS)?"
+          options={[
+            { label: "Yes", value: "Yes" },
+            { label: "No", value: "No" },
+          ]}
+          controlName="isIELTSTaken"
           control={control}
           errors={errors}
         />
-      )}
-    </Row>
-  );
-  const Step4 = () => (
-    <Row>
-      <h3 className=" text-center text-2xl blue-text font-medium mb-4">
-        {`  Spouse and Dependent Children’s Information`}
-      </h3>
-
-      <RadioButtonGroup
-        labelText="Marital Status"
-        controlName="maritalStatus"
-        options={[
-          { value: "Single", label: "Single" },
-          { value: "Married", label: "Married" },
-          { value: "Divorced", label: "Divorced" },
-          { value: "Widowed", label: "Widowed" },
-          { value: "Separated", label: "Separated" },
-        ]}
-        placeholder="Select Marital Status"
-        control={control}
-        errors={errors}
-      />
-
-      {watch("maritalStatus") !== "Single" &&
-        watch("maritalStatus") != undefined && (
+        {watch("isIELTSTaken") === "Yes" && (
           <>
             <DateInput
-              labelText="Spouse Date of Birth"
-              controlName="spouseDateOfBirth"
+              labelText="Kindly provide your test date"
+              controlName="testDate"
               control={control}
               errors={errors}
+              cssClasses="w-full sm:w-1/2"
             />
-
             <FormInputGroup
-              labelText="Spouse Country of Residence"
-              controlName="spouseCountryOfResidence"
+              labelText="Writing Score"
+              controlName="writingScore"
               control={control}
               errors={errors}
+              type="number"
+              cssClasses="w-full sm:w-1/2"
             />
-
             <FormInputGroup
-              labelText="Spouse Country of Citizenship"
-              controlName="spouseCountryOfCitizenship"
+              labelText="Speaking Score"
+              controlName="speakingScore"
               control={control}
               errors={errors}
+              type="number"
+              cssClasses="w-full sm:w-1/2"
             />
-
+            <FormInputGroup
+              labelText="Listening Score"
+              controlName="listeningScore"
+              control={control}
+              errors={errors}
+              type="number"
+              cssClasses="w-full sm:w-1/2"
+            />
+            <FormInputGroup
+              labelText="Reading Score"
+              controlName="readingScore"
+              control={control}
+              errors={errors}
+              type="number"
+              cssClasses="w-full sm:w-1/2"
+            />
             <RadioButtonGroup
-              labelText="Spouse Education Level"
-              controlName="spouseEducationLevel"
+              labelText="Which test type did you take?"
               options={[
-                { value: "High School", label: "High School" },
-                { value: "College", label: "College" },
-                { value: "Bachelors", label: "Bachelors" },
-                { value: "Masters", label: "Masters" },
-                { value: "PhD", label: "PhD" },
+                { label: "General", value: "General" },
+                { label: "Academic", value: "Academic" },
               ]}
-              placeholder="Select Education Level"
+              controlName="testType"
               control={control}
               errors={errors}
+              cssClasses="w-full sm:w-1/2"
             />
-
             <RadioButtonGroup
-              labelText="Has your spouse taken a language test?"
+              labelText="Do you have other language results?"
               options={[
                 { label: "Yes", value: "Yes" },
                 { label: "No", value: "No" },
               ]}
-              controlName="spouseLanguageTestTaken"
+              controlName="isOtherLanguageResults"
               control={control}
               errors={errors}
+              cssClasses="w-full sm:w-1/2"
             />
-
-            {watch("spouseLanguageTestTaken") === "Yes" && (
-              <>
-                <RadioButtonGroup
-                  labelText="Spouse Language Test Type"
-                  controlName="spouseLanguageTestType"
-                  options={[
-                    { value: "General", label: "General" },
-                    { value: "Academic", label: "Academic" },
-                  ]}
-                  placeholder="Select Test Type"
-                  control={control}
-                  errors={errors}
-                />
-
-                <FormInputGroup
-                  labelText="Spouse Writing Score"
-                  controlName="spouseLanguageTestScores.writing"
-                  type="number"
-                  control={control}
-                  errors={errors}
-                />
-
-                <FormInputGroup
-                  labelText="Spouse Speaking Score"
-                  controlName="spouseLanguageTestScores.speaking"
-                  type="number"
-                  control={control}
-                  errors={errors}
-                />
-
-                <FormInputGroup
-                  labelText="Spouse Listening Score"
-                  controlName="spouseLanguageTestScores.listening"
-                  type="number"
-                  control={control}
-                  errors={errors}
-                />
-
-                <FormInputGroup
-                  labelText="Spouse Reading Score"
-                  controlName="spouseLanguageTestScores.reading"
-                  type="number"
-                  control={control}
-                  errors={errors}
-                />
-              </>
+            {watch("isOtherLanguageResults") === "Yes" && (
+              <FormInputGroup
+                labelText="Kindly Indicate"
+                controlName="languageResults"
+                control={control}
+                errors={errors}
+                cssClasses="w-full sm:w-1/2"
+              />
             )}
           </>
         )}
-      <RadioButtonGroup
-        labelText="Do you have dependent children?"
-        options={[
-          { label: "Yes", value: "Yes" },
-          { label: "No", value: "No" },
-        ]}
-        controlName="dependentKids"
-        control={control}
-        errors={errors}
-      />
+      </Row>
+    </>
+  );
+  const Step3 = () => (
+    <>
+      <h3 className=" text-center text-2xl blue-text font-medium mb-4">
+        Education and Employment Profile Form Fields
+      </h3>
+      <Row className="flex flex-wrap">
+        {/* Education and Employment Profile Form Fields */}
 
-      {watch("dependentKids") === "Yes" &&
-        watch("dependentKids") != undefined && (
-          <FormInputGroup
-            labelText="Number of dependent children"
-            controlName="numberOfKids"
-            type="number"
-            control={control}
-            errors={errors}
-          />
-        )}
-
-      <RadioButtonGroup
-        labelText="Do you have a relative or friend in Canada?"
-        options={[
-          { label: "Yes", value: "Yes" },
-          { label: "No", value: "No" },
-        ]}
-        controlName="hasCanadianRelativeOrFriend"
-        control={control}
-        errors={errors}
-      />
-
-      {watch("hasCanadianRelativeOrFriend") === "Yes" &&
-        watch("hasCanadianRelativeOrFriend") != undefined && (
-          <>
-            <FormInputGroup
-              labelText="Relationship to Canadian resident"
-              controlName="relationshipWithCanadianRelativeOrFriend"
-              control={control}
-              errors={errors}
-            />
-
-            <FormInputGroup
-              labelText="Province of residence of relative/friend"
-              controlName="provinceOfResidenceOfRelativeOrFriend"
-              control={control}
-              errors={errors}
-            />
-          </>
-        )}
-
-      <RadioButtonGroup
-        labelText="Do you have a nomination certificate?"
-        options={[
-          { label: "Yes", value: "Yes" },
-          { label: "No", value: "No" },
-        ]}
-        controlName="hasNominationCertificate"
-        control={control}
-        errors={errors}
-      />
-
-      {watch("hasNominationCertificate") === "Yes" &&
-        watch("hasNominationCertificate") != undefined && (
+        <FormInputGroup
+          labelText="Highest Level of Education"
+          controlName="highestLevelOfEducation"
+          placeholder="Enter your highest level of education"
+          errors={errors}
+          control={control}
+          cssClasses="w-full sm:w-1/2"
+        />
+        <FormInputGroup
+          labelText="Country of attained Highest Degree"
+          controlName="earnedHighestDegreeCountry"
+          placeholder="Enter country you earned your highest degree"
+          errors={errors}
+          control={control}
+          cssClasses="w-full sm:w-1/2"
+        />
+        <FormInputGroup
+          labelText="Current Profession"
+          controlName="currentProfession"
+          placeholder="Enter your current profession"
+          errors={errors}
+          control={control}
+          cssClasses="w-full sm:w-1/2"
+        />
+        <FormInputGroup
+          labelText="Current Job Title"
+          controlName="currentJobTitle"
+          placeholder="Enter your current job title"
+          errors={errors}
+          control={control}
+          cssClasses="w-full sm:w-1/2"
+        />
+        <FormInputGroup
+          labelText="Number of years of work experience"
+          controlName="yearsOfWorkExperience"
+          placeholder="Enter number of years of your work experience"
+          type="number"
+          errors={errors}
+          control={control}
+          cssClasses="w-full sm:w-1/2"
+        />
+        <RadioButtonGroup
+          labelText="Have you evaluated your transcript with World Education Services (WES) or any other similar credential evaluation services?"
+          options={[
+            { label: "Yes", value: "Yes" },
+            { label: "No", value: "No" },
+          ]}
+          controlName="hasCredentialEvaluation"
+          control={control}
+          errors={errors}
+          cssClasses="w-full sm:w-1/2"
+        />
+        {watch("hasCredentialEvaluation") === "Yes" && (
           <DateInput
-            labelText="Nomination Certificate Received Date"
-            controlName="nominationReceivedDate"
+            labelText="Evaluation Date"
+            controlName="credentialEvaluationDate"
             control={control}
             errors={errors}
+            cssClasses="w-full sm:w-1/2"
           />
         )}
-    </Row>
+      </Row>
+    </>
+  );
+  const Step4 = () => (
+    <>
+      <h3 className=" text-center text-2xl blue-text font-medium mb-4">
+        {`  Spouse and Dependent Children’s Information`}
+      </h3>
+      <Row className="flex flex-wrap">
+        <RadioButtonGroup
+          labelText="Marital Status"
+          controlName="maritalStatus"
+          options={[
+            { value: "Single", label: "Single" },
+            { value: "Married", label: "Married" },
+            { value: "Divorced", label: "Divorced" },
+            { value: "Widowed", label: "Widowed" },
+            { value: "Separated", label: "Separated" },
+          ]}
+          placeholder="Select Marital Status"
+          control={control}
+          errors={errors}
+          cssClasses="w-full sm:w-1/2"
+        />
+
+        {watch("maritalStatus") !== "Single" &&
+          watch("maritalStatus") != undefined && (
+            <>
+              <DateInput
+                labelText="Spouse Date of Birth"
+                controlName="spouseDateOfBirth"
+                control={control}
+                errors={errors}
+                cssClasses="w-full sm:w-1/2"
+              />
+
+              <FormInputGroup
+                labelText="Spouse Country of Residence"
+                controlName="spouseCountryOfResidence"
+                control={control}
+                errors={errors}
+                cssClasses="w-full sm:w-1/2"
+              />
+
+              <FormInputGroup
+                labelText="Spouse Country of Citizenship"
+                controlName="spouseCountryOfCitizenship"
+                control={control}
+                errors={errors}
+                cssClasses="w-full sm:w-1/2"
+              />
+
+              <RadioButtonGroup
+                labelText="Spouse Education Level"
+                controlName="spouseEducationLevel"
+                options={[
+                  { value: "High School", label: "High School" },
+                  { value: "College", label: "College" },
+                  { value: "Bachelors", label: "Bachelors" },
+                  { value: "Masters", label: "Masters" },
+                  { value: "PhD", label: "PhD" },
+                ]}
+                placeholder="Select Education Level"
+                control={control}
+                errors={errors}
+                cssClasses="w-full sm:w-1/2"
+              />
+
+              <RadioButtonGroup
+                labelText="Has your spouse taken a language test?"
+                options={[
+                  { label: "Yes", value: "Yes" },
+                  { label: "No", value: "No" },
+                ]}
+                controlName="spouseLanguageTestTaken"
+                control={control}
+                errors={errors}
+                cssClasses="w-full sm:w-1/2"
+              />
+
+              {watch("spouseLanguageTestTaken") === "Yes" && (
+                <>
+                  <RadioButtonGroup
+                    labelText="Spouse Language Test Type"
+                    controlName="spouseLanguageTestType"
+                    options={[
+                      { value: "General", label: "General" },
+                      { value: "Academic", label: "Academic" },
+                    ]}
+                    placeholder="Select Test Type"
+                    control={control}
+                    errors={errors}
+                    cssClasses="w-full sm:w-1/2"
+                  />
+
+                  <FormInputGroup
+                    labelText="Spouse Writing Score"
+                    controlName="spouseLanguageTestScores.writing"
+                    type="number"
+                    control={control}
+                    errors={errors}
+                    cssClasses="w-full sm:w-1/2"
+                  />
+
+                  <FormInputGroup
+                    labelText="Spouse Speaking Score"
+                    controlName="spouseLanguageTestScores.speaking"
+                    type="number"
+                    control={control}
+                    errors={errors}
+                    cssClasses="w-full sm:w-1/2"
+                  />
+
+                  <FormInputGroup
+                    labelText="Spouse Listening Score"
+                    controlName="spouseLanguageTestScores.listening"
+                    type="number"
+                    control={control}
+                    errors={errors}
+                    cssClasses="w-full sm:w-1/2"
+                  />
+
+                  <FormInputGroup
+                    labelText="Spouse Reading Score"
+                    controlName="spouseLanguageTestScores.reading"
+                    type="number"
+                    control={control}
+                    errors={errors}
+                    cssClasses="w-full sm:w-1/2"
+                  />
+                </>
+              )}
+            </>
+          )}
+        <RadioButtonGroup
+          labelText="Do you have dependent children?"
+          options={[
+            { label: "Yes", value: "Yes" },
+            { label: "No", value: "No" },
+          ]}
+          controlName="dependentKids"
+          control={control}
+          errors={errors}
+          cssClasses="w-full sm:w-1/2"
+        />
+
+        {watch("dependentKids") === "Yes" &&
+          watch("dependentKids") != undefined && (
+            <FormInputGroup
+              labelText="Number of dependent children"
+              controlName="numberOfKids"
+              type="number"
+              control={control}
+              errors={errors}
+              cssClasses="w-full sm:w-1/2"
+            />
+          )}
+
+        <RadioButtonGroup
+          labelText="Do you have a relative or friend in Canada?"
+          options={[
+            { label: "Yes", value: "Yes" },
+            { label: "No", value: "No" },
+          ]}
+          controlName="hasCanadianRelativeOrFriend"
+          control={control}
+          errors={errors}
+          cssClasses="w-full sm:w-1/2"
+        />
+
+        {watch("hasCanadianRelativeOrFriend") === "Yes" &&
+          watch("hasCanadianRelativeOrFriend") != undefined && (
+            <>
+              <FormInputGroup
+                labelText="Relationship to Canadian resident"
+                controlName="relationshipWithCanadianRelativeOrFriend"
+                control={control}
+                errors={errors}
+                cssClasses="w-full sm:w-1/2"
+              />
+
+              <FormInputGroup
+                labelText="Province of residence of relative/friend"
+                controlName="provinceOfResidenceOfRelativeOrFriend"
+                control={control}
+                errors={errors}
+                cssClasses="w-full sm:w-1/2"
+              />
+            </>
+          )}
+
+        <RadioButtonGroup
+          labelText="Do you have a nomination certificate?"
+          options={[
+            { label: "Yes", value: "Yes" },
+            { label: "No", value: "No" },
+          ]}
+          controlName="hasNominationCertificate"
+          control={control}
+          errors={errors}
+          cssClasses="w-full sm:w-1/2"
+        />
+
+        {watch("hasNominationCertificate") === "Yes" &&
+          watch("hasNominationCertificate") != undefined && (
+            <DateInput
+              labelText="Nomination Certificate Received Date"
+              controlName="nominationReceivedDate"
+              control={control}
+              errors={errors}
+              cssClasses="w-full sm:w-1/2"
+            />
+          )}
+      </Row>
+    </>
   );
   const Step5 = () => (
     <Row>
