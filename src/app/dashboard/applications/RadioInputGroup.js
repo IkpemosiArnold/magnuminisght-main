@@ -9,10 +9,11 @@ export default function RadioButtonGroup({
   options,
   control,
   errors,
+  cssClasses,
 }) {
   return (
-    <Form.Group>
-      <Form.Label>{labelText}</Form.Label>
+    <Form.Group className={cssClasses ? cssClasses : ""}>
+      <Form.Label className="mt-4">{labelText}</Form.Label>
       {options.map((option) => (
         <Controller
           control={control}

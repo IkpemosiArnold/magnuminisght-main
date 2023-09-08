@@ -11,9 +11,10 @@ export default function FormInputGroup({
   errors,
   control,
   type,
+  cssClasses,
 }) {
   return (
-    <>
+    <div className={cssClasses ? cssClasses : ""}>
       <Form.Label className="mt-4" htmlFor={controlName}>
         {labelText}
       </Form.Label>
@@ -37,6 +38,6 @@ export default function FormInputGroup({
           <p>{errors[controlName].message}</p>
         </div>
       )}
-    </>
+    </div>
   );
 }

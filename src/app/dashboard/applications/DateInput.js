@@ -3,10 +3,16 @@ import React from "react";
 import { Controller } from "react-hook-form";
 import Form from "react-bootstrap/Form";
 
-export default function DateInput({ labelText, controlName, control, errors }) {
+export default function DateInput({
+  labelText,
+  controlName,
+  control,
+  errors,
+  cssClasses,
+}) {
   return (
-    <Form.Group>
-      <Form.Label>{labelText}</Form.Label>
+    <Form.Group className={cssClasses ? cssClasses : ""}>
+      <Form.Label className="mt-4">{labelText}</Form.Label>
       <Controller
         name={controlName}
         control={control}
