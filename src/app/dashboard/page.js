@@ -28,7 +28,7 @@ export default function Dashboard() {
     }
   }, []);
   return (
-    <main className="flex min-h-screen flex-col pl-4 pt-12 pr-4 libre-franklin min-w-[100vw] sm:min-w-[100vw]">
+    <main className="flex min-h-screen flex-col pl-4 pt-12 pr-4 libre-franklin min-w-[100vw] sm:min-w-[90vw]">
       <h1 className="font-bold text-2xl blue-text">Hello, {user.firstname}!</h1>
       <h3 className="font-bold text-xl mt-12 ">
         What would you like assistance with today ?

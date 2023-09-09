@@ -43,25 +43,25 @@ const Navbar = () => {
         <div className="libre-franklin lg:flex-grow">
           <a
             href="/dashboard"
-            className="block mt-4 lg:inline-block lg:mt-0 text-white-200 mr-4"
+            className="block  md:mt-0 mt-4  lg:inline-block  text-white-200 mr-4"
           >
             Dashboard
           </a>
           <a
-            href="/profile"
-            className="block mt-4 lg:inline-block lg:mt-0 text-white-200 mr-4"
+            href="/dashboard/profile"
+            className="block mt-4 md:mt-0 lg:inline-block  text-white-200 mr-4"
           >
             Profile
           </a>
           <a
-            href="/applications"
-            className="block mt-4 lg:inline-block lg:mt-0 text-white-200 mr-4"
+            href="/dashboard/applications"
+            className="block mt-4 md:mt-0 lg:inline-block  text-white-200 mr-4"
           >
             Application
           </a>
           <a
             href="#"
-            className="block mt-4 lg:inline-block lg:mt-0 text-white-200 mr-4"
+            className="block mt-4 md:mt-0 lg:inline-block  text-white-200 mr-4"
           >
             Messages
           </a>
