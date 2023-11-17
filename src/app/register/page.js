@@ -41,16 +41,25 @@ export default function Page() {
     enableReinitialize: true,
     initialValues: {
       first_name:
-        window !== "undefined" ? localStorage.getItem("first_name") : " " || "",
+        typeof window !== "undefined"
+          ? localStorage.getItem("first_name") || ""
+          : "",
       last_name:
-        window !== "undefined" ? localStorage.getItem("last_name") : " " || "",
-      email: window !== "undefined" ? localStorage.getItem("email") : " " || "",
+        typeof window !== "undefined"
+          ? localStorage.getItem("last_name") || ""
+          : "",
+      email:
+        typeof window !== "undefined"
+          ? localStorage.getItem("email") || ""
+          : "",
       password:
-        window !== "undefined" ? localStorage.getItem("password") : " " || "",
+        typeof window !== "undefined"
+          ? localStorage.getItem("password") || ""
+          : "",
       confirmpassword:
-        window !== "undefined"
-          ? localStorage.getItem("confirmpassword")
-          : " " || "",
+        typeof window !== "undefined"
+          ? localStorage.getItem("confirmpassword") || ""
+          : "",
     },
     validationSchema: Yup.object({
       first_name: Yup.string().required("Firstname is required"),
