@@ -40,11 +40,17 @@ export default function Page() {
   const validation = useFormik({
     enableReinitialize: true,
     initialValues: {
-      first_name: localStorage.getItem("first_name") || "",
-      last_name: localStorage.getItem("last_name") || "",
-      email: localStorage.getItem("email") || "",
-      password: localStorage.getItem("password") || "",
-      confirmpassword: localStorage.getItem("confirmpassword") || "",
+      first_name:
+        window !== "undefined" ? localStorage.getItem("first_name") : " " || "",
+      last_name:
+        window !== "undefined" ? localStorage.getItem("last_name") : " " || "",
+      email: window !== "undefined" ? localStorage.getItem("email") : " " || "",
+      password:
+        window !== "undefined" ? localStorage.getItem("password") : " " || "",
+      confirmpassword:
+        window !== "undefined"
+          ? localStorage.getItem("confirmpassword")
+          : " " || "",
     },
     validationSchema: Yup.object({
       first_name: Yup.string().required("Firstname is required"),
