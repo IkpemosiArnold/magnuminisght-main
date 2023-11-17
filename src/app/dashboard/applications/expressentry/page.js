@@ -5,11 +5,13 @@ import { Container, Form, Row, Col, Button } from "react-bootstrap";
 import FormInputGroup from "../FormInputGroup";
 import RadioButtonGroup from "../RadioInputGroup";
 import DateInput from "../DateInput";
-
 // Form validation
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Express() {
   const variants = {
@@ -219,7 +221,14 @@ export default function Express() {
   const onError = (errors, e) => console.log(errors, e);
 
   const workPermitApply = (data) => {
-    console.log(data);
+    axios.post('https://midemo.ikpemosiarnold.repl.co/json-schema', { data })
+    .then((response) => {
+      console.log(response.data);
+      toast("submit successful");
+    })
+    .catch((error) => {
+      console.error('Error sending data:', error);
+    });
   };
 
   const goToNextStep = () => setCurrentStep((step) => step + 1);
@@ -725,6 +734,7 @@ export default function Express() {
     <main className="flex min-h-screen flex-col p-12 libre-franklin min-w-[90vw] sm:min-w-[60vw]">
       <h1 className="font-bold text-xl blue-text">Fill this form carefully</h1>
       <Container fluid className="mt-4 formContainer">
+      <ToastContainer />
         <motion.div
           key={currentStep}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}

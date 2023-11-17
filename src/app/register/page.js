@@ -7,15 +7,14 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Image from "next/image";
-import { getUsers, setUsers } from "../Helpers";
 import { ToastContainer, toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import "react-toastify/dist/ReactToastify.css";
 //style
 import "../formstyles.css";
 
-//redux
-import { useSelector, useDispatch } from "react-redux";
+//zustand
+import { useStore } from "../store/store";
 
 // Formik validation
 import * as Yup from "yup";
@@ -28,26 +27,28 @@ import regimg from "../../assets/register-page-img.jpg";
 
 import { PiIdentificationCardFill } from "react-icons/pi";
 import { MdEmail } from "react-icons/md";
-import { FaKey } from "react-icons/fa";
-import { BiSolidLockAlt } from "react-icons/bi";
 import { RxEyeOpen, RxEyeClosed } from "react-icons/rx";
+
+///Import Register function
+import { registerUser } from "../apiCalls/apiCalls";
 
 export default function Page() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const router = useRouter();
+  const { registerResponse } = useStore();
   const validation = useFormik({
     enableReinitialize: true,
     initialValues: {
-      firstname: "",
-      lastname: "",
-      email: "",
-      password: "",
-      confirmpassword: "",
+      first_name: localStorage.getItem("first_name") || "",
+      last_name: localStorage.getItem("last_name") || "",
+      email: localStorage.getItem("email") || "",
+      password: localStorage.getItem("password") || "",
+      confirmpassword: localStorage.getItem("confirmpassword") || "",
     },
     validationSchema: Yup.object({
-      firstname: Yup.string().required("Firstname is required"),
-      lastname: Yup.string().required("Lastname is required"),
+      first_name: Yup.string().required("Firstname is required"),
+      last_name: Yup.string().required("Lastname is required"),
       email: Yup.string()
         .email("Invalid email address")
         .required("Email is required"),
@@ -59,20 +60,28 @@ export default function Page() {
         .required("Confirm password is required"),
     }),
     onSubmit: (values) => {
-      const currentUsers = getUsers();
-      const isAlreadyRegistered = currentUsers.some(
-        (user) => user.email === values.email
-      );
-
-      if (isAlreadyRegistered) {
-        toast("User already registered");
-      } else {
-        setUsers(values);
-        toast("Registration successful");
-        router.push("/login");
-      }
+      registerUser(values);
     },
   });
+  useEffect(() => {
+    if (registerResponse != "{}") {
+      toast(`${registerResponse}`); // Toast the data
+    }
+  }, [registerResponse]);
+  // Use an effect to update localStorage whenever field values change
+  useEffect(() => {
+    localStorage.setItem("first_name", validation.values.first_name);
+    localStorage.setItem("last_name", validation.values.last_name);
+    localStorage.setItem("email", validation.values.email);
+    localStorage.setItem("password", validation.values.password);
+    localStorage.setItem("confirmpassword", validation.values.confirmpassword);
+  }, [
+    validation.values.first_name,
+    validation.values.last_name,
+    validation.values.email,
+    validation.values.password,
+    validation.values.confirmpassword,
+  ]);
   return (
     <Container fluid id="registerContainer">
       <ToastContainer />
@@ -116,7 +125,7 @@ export default function Page() {
             <Form.Label htmlFor="firstname">First Name</Form.Label>
             <InputGroup className="mb-3 register-input" controlid="firstname">
               <Form.Control
-                name="firstname"
+                name="first_name"
                 placeholder="Jane"
                 value={validation.values.firstname}
                 onChange={validation.handleChange}
@@ -136,7 +145,7 @@ export default function Page() {
             <Form.Label htmlFor="lastname">Last Name</Form.Label>
             <InputGroup className="mb-3 register-input" controlid="lastname">
               <Form.Control
-                name="lastname"
+                name="last_name"
                 placeholder="Doe"
                 value={validation.values.lastname}
                 onChange={validation.handleChange}
@@ -153,7 +162,7 @@ export default function Page() {
                 </Form.Control.Feedback>
               )}
             </InputGroup>
-            <Form.Label htmFor="email">Email</Form.Label>
+            <Form.Label htmlFor="email">Email</Form.Label>
             <InputGroup className="mb-3 register-input" controlid="email">
               <Form.Control
                 type="email"

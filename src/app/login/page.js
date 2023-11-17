@@ -14,9 +14,6 @@ import "react-toastify/dist/ReactToastify.css";
 //style
 import "../formstyles.css";
 
-//redux
-import { useSelector, useDispatch } from "react-redux";
-
 // Formik validation
 import * as Yup from "yup";
 import { useFormik } from "formik";
