@@ -2,9 +2,11 @@
 // components/Navbar.tsx
 import React, { useState } from "react";
 import logo from "../../assets/LogoWhite.png";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Button } from "react-bootstrap";
+
+//import actions
+import { logoutUser } from "../apiCalls/apiCalls";
 
 const Logostrip = () => {
   const router = useRouter();
@@ -19,7 +21,8 @@ const Logostrip = () => {
           className="custom-button"
           variant="primary"
           onClick={() => {
-            const loggedoutUser = localStorage.removeItem("loggedInUser");
+            logoutUser();
+            const loggedoutUser = localStorage.removeItem("user-storage");
             router.push("/login");
           }}
         >

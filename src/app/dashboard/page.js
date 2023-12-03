@@ -1,8 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import {
@@ -12,24 +10,25 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { useRouter } from "next/navigation";
+} from "../../components/ui/card";
+
+// Zustand
+
+import { useStore } from "../store/store";
 
 export default function Dashboard() {
-  const router = useRouter();
-  const [user, setUser] = useState({});
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    const loggedInUser = localStorage.getItem("loggedInUser");
-    if (loggedInUser) {
-      setUser(JSON.parse(loggedInUser));
-    } else if (!loggedInUser) {
-      router.push("/login");
-    }
+    setIsClient(true);
   }, []);
+
+  const { authUser } = useStore();
   return (
     <main className="flex min-h-screen flex-col pl-4 pt-12 pr-4 libre-franklin min-w-[80vw] sm:min-w-[88vw]">
-      <h1 className="font-bold text-2xl blue-text">Hello, {user.firstname}!</h1>
+      <h1 className="font-bold text-2xl blue-text">
+        {isClient ? `Hello, ${authUser["first_name"]}!` : " "}
+      </h1>
       <h3 className="font-bold text-xl mt-12 ">
         What would you like assistance with today ?
       </h3>

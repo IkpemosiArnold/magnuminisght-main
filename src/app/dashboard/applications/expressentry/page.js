@@ -13,6 +13,8 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import { expressentrySubmit } from "../../../apiCalls/apiCalls";
+
 export default function Express() {
   const variants = {
     exit: { opacity: 0, x: "-100vw" },
@@ -21,8 +23,8 @@ export default function Express() {
   ////YUP SCHEMA------------------------
   const schema = yup
     .object({
-      Firstname: yup.string().required(),
-      Lastname: yup.string().required(),
+      first_name: yup.string().required(),
+      last_name: yup.string().required(),
       email: yup
         .string()
         .email("Must be a valid email address")
@@ -31,51 +33,48 @@ export default function Express() {
         .string()
         .oneOf([yup.ref("email"), null], "Emails must match")
         .required("Confirm Email is required"),
-      dateOfBirth: yup.date().required("Date of birth is required").nullable(),
-      placeOfBirth: yup.string().required("Place of birth is required"),
+      birth_date: yup.date().required("Date of birth is required").nullable(),
+      place_of_birth: yup.string().required("Place of birth is required"),
       gender: yup
         .string()
         .oneOf(["Male", "Female"], "Gender is required")
         .required(),
-      countryOfCitizenship: yup
+      country_of_citizenship: yup
         .string()
         .required("Country of Citizenship is required"),
-      countryOfResidence: yup
+      country_of_citizenship: yup
         .string()
         .required("Country of Residence is required"),
-      hasValidPassport: yup
+      valid_passport: yup
         .string()
         .oneOf(["Yes", "No"], "Answer is required")
         .required(),
-      expirationDate: yup.date().when("hasValidPassport", {
+      passport_exp_date: yup.date().when("valid_passport", {
         is: "Yes",
         then: () => yup.date().nullable(),
       }),
-      isIELTSTaken: yup
-        .string()
-        .oneOf(["Yes", "No"], "Answer is required")
-        .required(),
-      testDate: yup.date().when("isIELTSTaken", {
+      ielts: yup.string().oneOf(["Yes", "No"], "Answer is required").required(),
+      ielts_test_date: yup.date().when("ielts", {
         is: "Yes",
         then: () => yup.date().nullable().required("Test date is required"),
       }),
-      writingScore: yup.string().when("isIELTSTaken", {
+      ielts_score_writing: yup.string().when("ielts", {
         is: "Yes",
         then: () => yup.string().required("Writing score is required"),
       }),
-      speakingScore: yup.string().when("isIELTSTaken", {
+      ielts_score_speaking: yup.string().when("ielts", {
         is: "Yes",
         then: () => yup.string().required("Speaking score is required"),
       }),
-      listeningScore: yup.string().when("isIELTSTaken", {
+      ielts_score_listening: yup.string().when("ielts", {
         is: "Yes",
         then: () => yup.string().required("Listening score is required"),
       }),
-      readingScore: yup.string().when("isIELTSTaken", {
+      ielts_score_reading: yup.string().when("ielts", {
         is: "Yes",
         then: () => yup.string().required("Reading score is required"),
       }),
-      testType: yup.string().when("isIELTSTaken", {
+      ielts_test_type: yup.string().when("ielts", {
         is: "Yes",
         then: () =>
           yup
@@ -83,56 +82,54 @@ export default function Express() {
             .oneOf(["General", "Academic"], "Selection is required")
             .required("Test type is required"),
       }),
-      isOtherLanguageResults: yup
+      other_language: yup
         .string()
         .oneOf(["Yes", "No"], "Answer is required")
         .required(),
-      languageResults: yup.string().when("isOtherLanguageResults", {
+      other_language_results: yup.string().when("other_language", {
         is: "Yes",
         then: () => yup.string().required("Please indicate"),
       }),
-      highestLevelOfEducation: yup.string().required("This field is required"),
-      earnedHighestDegreeCountry: yup
-        .string()
-        .required("This field is required"),
-      currentProfession: yup.string().required("This field is required"),
-      currentJobTitle: yup.string().required("This field is required"),
-      yearsOfWorkExperience: yup
+      education_level: yup.string().required("This field is required"),
+      country_of_study: yup.string().required("This field is required"),
+      current_profession: yup.string().required("This field is required"),
+      current_job: yup.string().required("This field is required"),
+      years_work_experience: yup
         .number()
         .required("This field is required")
         .positive()
         .integer(),
-      hasCredentialEvaluation: yup
+      wes_evaluation_credential: yup
         .string()
         .oneOf(["Yes", "No"], "Answer is required")
         .required(),
-      credentialEvaluationDate: yup.date().when("hasCredentialEvaluation", {
+      wes_date: yup.date().when("wes_evaluation_credential", {
         is: "Yes",
         then: () => yup.date().nullable().required("Date is required"),
       }),
-      maritalStatus: yup
+      marital_status: yup
         .string()
         .oneOf(["Single", "Married", "Divorced", "Widowed", "Separated"])
         .required(),
 
-      spouseDateOfBirth: yup.date().when("maritalStatus", {
+      spouse_dob: yup.date().when("marital_status", {
         is: (value) => value !== "Single",
         then: (schema) => schema.required("Spouse date of birth is required"),
       }),
 
-      spouseCountryOfResidence: yup.string().when("maritalStatus", {
+      spouse_country_of_res: yup.string().when("marital_status", {
         is: (value) => value !== "Single",
         then: (schema) =>
           schema.required("Spouse country of residence is required"),
       }),
 
-      spouseCountryOfCitizenship: yup.string().when("maritalStatus", {
+      spouse_country_of_citizenship: yup.string().when("marital_status", {
         is: (value) => value !== "Single",
         then: (schema) =>
           schema.required("Spouse country of citizenship is required"),
       }),
 
-      spouseEducationLevel: yup.string().when("maritalStatus", {
+      spouse_education_level: yup.string().when("marital_status", {
         is: (value) => value !== "Single",
         then: (schema) => schema.required("Spouse education level is required"),
       }),
@@ -140,13 +137,13 @@ export default function Express() {
       spouseLanguageTestTaken: yup
         .string()
         .oneOf(["Yes", "No"])
-        .when("maritalStatus", {
+        .when("marital_status", {
           is: (value) => value !== "Single",
           then: (schema) =>
             schema.required("Indicate if spouse took a language test"),
         }),
 
-      spouseLanguageTestType: yup
+      spouse_ielts_test_type: yup
         .string()
         .when("spouseLanguageTestTaken", {
           is: "Yes",
@@ -172,38 +169,37 @@ export default function Express() {
           then: (schema) => schema.required("Reading score is required"),
         }),
       }),
-      dependentKids: yup.string().oneOf(["Yes", "No"]).required(),
+      dependent_kids: yup.string().oneOf(["Yes", "No"]).required(),
 
-      numberOfKids: yup.number().when("dependentKids", {
+      no_of_kids: yup.number().when("dependent_kids", {
         is: "Yes",
         then: (schema) => schema.required("Required"),
       }),
-      hasCanadianRelativeOrFriend: yup
+      relative_in_canada: yup
         .string()
         .oneOf(["Yes", "No"])
         .required("Please specify if you have a relative or friend in Canada"),
-      relationshipWithCanadianRelativeOrFriend: yup
-        .string()
-        .when("hasCanadianRelativeOrFriend", {
-          is: "Yes",
-          then: () =>
-            yup.string().required("Nature of the relationship is required"),
-        }),
-      provinceOfResidenceOfRelativeOrFriend: yup
-        .string()
-        .when("hasCanadianRelativeOrFriend", {
-          is: true,
-          then: () =>
-            yup.string().required("Province of residence is required"),
-        }),
-      hasNominationCertificate: yup
+      nature_of_relationship: yup.string().when("relative_in_canada", {
+        is: "Yes",
+        then: () =>
+          yup.string().required("Nature of the relationship is required"),
+      }),
+      province_in_canada: yup.string().when("relative_in_canada", {
+        is: true,
+        then: () => yup.string().required("Province of residence is required"),
+      }),
+      spouse_nomination_cert: yup
         .string()
         .oneOf(["Yes", "No"])
         .required("Please specify if you have a nomination certificate"),
-      nominationReceivedDate: yup.date().when("hasNominationCertificate", {
+      normination_recieved_date: yup.date().when("spouse_nomination_cert", {
         is: "Yes",
         then: () => yup.date().required("Nomination received date is required"),
       }),
+
+      createdAt: yup.date().default(() => new Date()),
+      source_of_income: yup.string().required("This field is required"),
+      about_us_referral: yup.string().required("This field is required"),
     })
     .required();
 
@@ -219,18 +215,32 @@ export default function Express() {
     mode: "onBlur",
   });
   const onError = (errors, e) => console.log(errors, e);
-
-  const workPermitApply = (data) => {
-    axios.post('https://midemo.ikpemosiarnold.repl.co/json-schema', { data })
-    .then((response) => {
-      console.log(response.data);
-      toast("submit successful");
-    })
-    .catch((error) => {
-      console.error('Error sending data:', error);
-    });
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toISOString().slice(0, 10); // convert to format `YYYY-MM-DD`
   };
+  const workPermitApply = (data) => {
+    const fieldsToConvert = [
+      "birth_date",
+      "passport_exp_date",
+      "wes_date",
+      "spouse_dob",
+      "normination_recieved_date",
+      "ielts_test_date",
+      "createdAt",
+    ]; // add here all dates fields you need to convert
 
+    const formattedData = { ...data };
+
+    fieldsToConvert.forEach((field) => {
+      if (formattedData[field]) {
+        formattedData[field] = formatDate(formattedData[field]);
+      }
+    });
+
+    console.log(formattedData);
+    expressentrySubmit(formattedData);
+  };
   const goToNextStep = () => setCurrentStep((step) => step + 1);
   const goToPreviousStep = () => setCurrentStep((step) => step - 1);
 
@@ -243,7 +253,7 @@ export default function Express() {
         {/* Personal Information Form Fields */}
         <FormInputGroup
           labelText="Firstname"
-          controlName="Firstname"
+          controlName="first_name"
           placeholder="Enter your firstname"
           errors={errors}
           control={control}
@@ -251,7 +261,7 @@ export default function Express() {
         />
         <FormInputGroup
           labelText="Lastname"
-          controlName="Lastname"
+          controlName="last_name"
           placeholder="Enter your lastname"
           errors={errors}
           control={control}
@@ -277,14 +287,14 @@ export default function Express() {
         />
         <DateInput
           labelText="Please Enter your Date of Birth"
-          controlName="dateOfBirth"
+          controlName="birth_date"
           control={control}
           errors={errors}
           cssClasses="w-full sm:w-1/2"
         />
         <FormInputGroup
           labelText="Place of Birth"
-          controlName="placeOfBirth"
+          controlName="place_of_birth"
           control={control}
           errors={errors}
           cssClasses="w-full sm:w-1/2"
@@ -301,7 +311,7 @@ export default function Express() {
         />
         <FormInputGroup
           labelText="Country of Citizenship"
-          controlName="countryOfCitizenship"
+          controlName="country_of_citizenship"
           placeholder="Enter your Country of Citizenship"
           errors={errors}
           control={control}
@@ -309,7 +319,7 @@ export default function Express() {
         />
         <FormInputGroup
           labelText="Country of Residence"
-          controlName="countryOfResidence"
+          controlName="country_of_res"
           placeholder="Enter your Country of Residence"
           errors={errors}
           control={control}
@@ -321,14 +331,14 @@ export default function Express() {
             { label: "Yes", value: "Yes" },
             { label: "No", value: "No" },
           ]}
-          controlName="hasValidPassport"
+          controlName="valid_passport"
           control={control}
           errors={errors}
         />
-        {watch("hasValidPassport") === "Yes" && (
+        {watch("valid_passport") === "Yes" && (
           <DateInput
             labelText="Expiration date"
-            controlName="expirationDate"
+            controlName="passport_exp_date"
             control={control}
             errors={errors}
           />
@@ -350,22 +360,22 @@ export default function Express() {
             { label: "Yes", value: "Yes" },
             { label: "No", value: "No" },
           ]}
-          controlName="isIELTSTaken"
+          controlName="ielts"
           control={control}
           errors={errors}
         />
-        {watch("isIELTSTaken") === "Yes" && (
+        {watch("ielts") === "Yes" && (
           <>
             <DateInput
               labelText="Kindly provide your test date"
-              controlName="testDate"
+              controlName="ielts_test_date"
               control={control}
               errors={errors}
               cssClasses="w-full sm:w-1/2"
             />
             <FormInputGroup
               labelText="Writing Score"
-              controlName="writingScore"
+              controlName="ielts_score_writing"
               control={control}
               errors={errors}
               type="number"
@@ -373,7 +383,7 @@ export default function Express() {
             />
             <FormInputGroup
               labelText="Speaking Score"
-              controlName="speakingScore"
+              controlName="ielts_score_speaking"
               control={control}
               errors={errors}
               type="number"
@@ -381,7 +391,7 @@ export default function Express() {
             />
             <FormInputGroup
               labelText="Listening Score"
-              controlName="listeningScore"
+              controlName="ielts_score_listening"
               control={control}
               errors={errors}
               type="number"
@@ -389,7 +399,7 @@ export default function Express() {
             />
             <FormInputGroup
               labelText="Reading Score"
-              controlName="readingScore"
+              controlName="ielts_score_reading"
               control={control}
               errors={errors}
               type="number"
@@ -401,32 +411,32 @@ export default function Express() {
                 { label: "General", value: "General" },
                 { label: "Academic", value: "Academic" },
               ]}
-              controlName="testType"
+              controlName="ielts_test_type"
               control={control}
               errors={errors}
               cssClasses="w-full sm:w-1/2"
             />
-            <RadioButtonGroup
-              labelText="Do you have other language results?"
-              options={[
-                { label: "Yes", value: "Yes" },
-                { label: "No", value: "No" },
-              ]}
-              controlName="isOtherLanguageResults"
-              control={control}
-              errors={errors}
-              cssClasses="w-full sm:w-1/2"
-            />
-            {watch("isOtherLanguageResults") === "Yes" && (
-              <FormInputGroup
-                labelText="Kindly Indicate"
-                controlName="languageResults"
-                control={control}
-                errors={errors}
-                cssClasses="w-full sm:w-1/2"
-              />
-            )}
           </>
+        )}
+        <RadioButtonGroup
+          labelText="Do you have other language results?"
+          options={[
+            { label: "Yes", value: "Yes" },
+            { label: "No", value: "No" },
+          ]}
+          controlName="other_language"
+          control={control}
+          errors={errors}
+          cssClasses="w-full sm:w-1/2"
+        />
+        {watch("other_language_results") === "Yes" && (
+          <FormInputGroup
+            labelText="Kindly Indicate"
+            controlName="other_language_results"
+            control={control}
+            errors={errors}
+            cssClasses="w-full sm:w-1/2"
+          />
         )}
       </Row>
     </>
@@ -441,7 +451,7 @@ export default function Express() {
 
         <FormInputGroup
           labelText="Highest Level of Education"
-          controlName="highestLevelOfEducation"
+          controlName="education_level"
           placeholder="Enter your highest level of education"
           errors={errors}
           control={control}
@@ -449,7 +459,7 @@ export default function Express() {
         />
         <FormInputGroup
           labelText="Country of attained Highest Degree"
-          controlName="earnedHighestDegreeCountry"
+          controlName="country_of_study"
           placeholder="Enter country you earned your highest degree"
           errors={errors}
           control={control}
@@ -457,7 +467,7 @@ export default function Express() {
         />
         <FormInputGroup
           labelText="Current Profession"
-          controlName="currentProfession"
+          controlName="current_profession"
           placeholder="Enter your current profession"
           errors={errors}
           control={control}
@@ -465,7 +475,7 @@ export default function Express() {
         />
         <FormInputGroup
           labelText="Current Job Title"
-          controlName="currentJobTitle"
+          controlName="current_job"
           placeholder="Enter your current job title"
           errors={errors}
           control={control}
@@ -473,7 +483,7 @@ export default function Express() {
         />
         <FormInputGroup
           labelText="Number of years of work experience"
-          controlName="yearsOfWorkExperience"
+          controlName="years_work_experience"
           placeholder="Enter number of years of your work experience"
           type="number"
           errors={errors}
@@ -486,15 +496,15 @@ export default function Express() {
             { label: "Yes", value: "Yes" },
             { label: "No", value: "No" },
           ]}
-          controlName="hasCredentialEvaluation"
+          controlName="wes_evaluation_credential"
           control={control}
           errors={errors}
           cssClasses="w-full sm:w-1/2"
         />
-        {watch("hasCredentialEvaluation") === "Yes" && (
+        {watch("wes_evaluation_credential") === "Yes" && (
           <DateInput
             labelText="Evaluation Date"
-            controlName="credentialEvaluationDate"
+            controlName="wes_date"
             control={control}
             errors={errors}
             cssClasses="w-full sm:w-1/2"
@@ -511,7 +521,7 @@ export default function Express() {
       <Row className="flex flex-wrap">
         <RadioButtonGroup
           labelText="Marital Status"
-          controlName="maritalStatus"
+          controlName="marital_status"
           options={[
             { value: "Single", label: "Single" },
             { value: "Married", label: "Married" },
@@ -525,12 +535,12 @@ export default function Express() {
           cssClasses="w-full sm:w-1/2"
         />
 
-        {watch("maritalStatus") !== "Single" &&
-          watch("maritalStatus") != undefined && (
+        {watch("marital_status") !== "Single" &&
+          watch("marital_status") != undefined && (
             <>
               <DateInput
                 labelText="Spouse Date of Birth"
-                controlName="spouseDateOfBirth"
+                controlName="spouse_dob"
                 control={control}
                 errors={errors}
                 cssClasses="w-full sm:w-1/2"
@@ -538,7 +548,7 @@ export default function Express() {
 
               <FormInputGroup
                 labelText="Spouse Country of Residence"
-                controlName="spouseCountryOfResidence"
+                controlName="spouse_country_of_res"
                 control={control}
                 errors={errors}
                 cssClasses="w-full sm:w-1/2"
@@ -546,7 +556,7 @@ export default function Express() {
 
               <FormInputGroup
                 labelText="Spouse Country of Citizenship"
-                controlName="spouseCountryOfCitizenship"
+                controlName="spouse_country_of_citizenship"
                 control={control}
                 errors={errors}
                 cssClasses="w-full sm:w-1/2"
@@ -554,7 +564,7 @@ export default function Express() {
 
               <RadioButtonGroup
                 labelText="Spouse Education Level"
-                controlName="spouseEducationLevel"
+                controlName="spouse_education_level"
                 options={[
                   { value: "High School", label: "High School" },
                   { value: "College", label: "College" },
@@ -584,7 +594,7 @@ export default function Express() {
                 <>
                   <RadioButtonGroup
                     labelText="Spouse Language Test Type"
-                    controlName="spouseLanguageTestType"
+                    controlName="spouse_ielts_test_type"
                     options={[
                       { value: "General", label: "General" },
                       { value: "Academic", label: "Academic" },
@@ -597,7 +607,7 @@ export default function Express() {
 
                   <FormInputGroup
                     labelText="Spouse Writing Score"
-                    controlName="spouseLanguageTestScores.writing"
+                    controlName="ielts_spouse_writing"
                     type="number"
                     control={control}
                     errors={errors}
@@ -606,7 +616,7 @@ export default function Express() {
 
                   <FormInputGroup
                     labelText="Spouse Speaking Score"
-                    controlName="spouseLanguageTestScores.speaking"
+                    controlName="ielts_spouse_speaking"
                     type="number"
                     control={control}
                     errors={errors}
@@ -615,7 +625,7 @@ export default function Express() {
 
                   <FormInputGroup
                     labelText="Spouse Listening Score"
-                    controlName="spouseLanguageTestScores.listening"
+                    controlName="ielts_spouse_listening"
                     type="number"
                     control={control}
                     errors={errors}
@@ -624,7 +634,7 @@ export default function Express() {
 
                   <FormInputGroup
                     labelText="Spouse Reading Score"
-                    controlName="spouseLanguageTestScores.reading"
+                    controlName="ielts_spouse_reading"
                     type="number"
                     control={control}
                     errors={errors}
@@ -640,17 +650,17 @@ export default function Express() {
             { label: "Yes", value: "Yes" },
             { label: "No", value: "No" },
           ]}
-          controlName="dependentKids"
+          controlName="dependent_kids"
           control={control}
           errors={errors}
           cssClasses="w-full sm:w-1/2"
         />
 
-        {watch("dependentKids") === "Yes" &&
-          watch("dependentKids") != undefined && (
+        {watch("dependent_kids") === "Yes" &&
+          watch("dependent_kids") != undefined && (
             <FormInputGroup
               labelText="Number of dependent children"
-              controlName="numberOfKids"
+              controlName="no_of_kids"
               type="number"
               control={control}
               errors={errors}
@@ -664,18 +674,18 @@ export default function Express() {
             { label: "Yes", value: "Yes" },
             { label: "No", value: "No" },
           ]}
-          controlName="hasCanadianRelativeOrFriend"
+          controlName="relative_in_canada"
           control={control}
           errors={errors}
           cssClasses="w-full sm:w-1/2"
         />
 
-        {watch("hasCanadianRelativeOrFriend") === "Yes" &&
-          watch("hasCanadianRelativeOrFriend") != undefined && (
+        {watch("relative_in_canada") === "Yes" &&
+          watch("relative_in_canada") != undefined && (
             <>
               <FormInputGroup
                 labelText="Relationship to Canadian resident"
-                controlName="relationshipWithCanadianRelativeOrFriend"
+                controlName="nature_of_relationship"
                 control={control}
                 errors={errors}
                 cssClasses="w-full sm:w-1/2"
@@ -683,7 +693,7 @@ export default function Express() {
 
               <FormInputGroup
                 labelText="Province of residence of relative/friend"
-                controlName="provinceOfResidenceOfRelativeOrFriend"
+                controlName="province_in_canada"
                 control={control}
                 errors={errors}
                 cssClasses="w-full sm:w-1/2"
@@ -697,17 +707,17 @@ export default function Express() {
             { label: "Yes", value: "Yes" },
             { label: "No", value: "No" },
           ]}
-          controlName="hasNominationCertificate"
+          controlName="spouse_nomination_cert"
           control={control}
           errors={errors}
           cssClasses="w-full sm:w-1/2"
         />
 
-        {watch("hasNominationCertificate") === "Yes" &&
-          watch("hasNominationCertificate") != undefined && (
+        {watch("spouse_nomination_cert") === "Yes" &&
+          watch("spouse_nomination_cert") != undefined && (
             <DateInput
               labelText="Nomination Certificate Received Date"
-              controlName="nominationReceivedDate"
+              controlName="normination_recieved_date"
               control={control}
               errors={errors}
               cssClasses="w-full sm:w-1/2"
@@ -719,7 +729,21 @@ export default function Express() {
   const Step5 = () => (
     <Row>
       {/* Others Form Fields */}
-      <p>Others</p>
+
+      <FormInputGroup
+        labelText="Where did you hear about us ?"
+        controlName="about_us_referral"
+        control={control}
+        errors={errors}
+        cssClasses="w-full sm:w-1/2"
+      />
+      <FormInputGroup
+        labelText="What is your current source of Income?"
+        controlName="source_of_income"
+        control={control}
+        errors={errors}
+        cssClasses="w-full sm:w-1/2"
+      />
     </Row>
   );
   const steps = [
@@ -734,7 +758,7 @@ export default function Express() {
     <main className="flex min-h-screen flex-col p-12 libre-franklin min-w-[90vw] sm:min-w-[60vw]">
       <h1 className="font-bold text-xl blue-text">Fill this form carefully</h1>
       <Container fluid className="mt-4 formContainer">
-      <ToastContainer />
+        <ToastContainer />
         <motion.div
           key={currentStep}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}

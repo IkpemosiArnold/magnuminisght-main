@@ -9,7 +9,6 @@ import InputGroup from "react-bootstrap/InputGroup";
 import Image from "next/image";
 import { getUsers, setUsers } from "../Helpers";
 import { ToastContainer, toast } from "react-toastify";
-import { useRouter } from "next/navigation";
 import "react-toastify/dist/ReactToastify.css";
 //style
 import "../formstyles.css";
@@ -23,12 +22,19 @@ import { useFormik } from "formik";
 import logo from "../../assets/MagnumAi.jpg";
 import logimg from "../../assets/login-page-img.jpg";
 import { MdEmail } from "react-icons/md";
-import { BiSolidLockAlt } from "react-icons/bi";
 import { RxEyeOpen, RxEyeClosed } from "react-icons/rx";
+
+///Import Login function
+import { loginUser } from "../apiCalls/apiCalls";
+
+//zustand
+import { useStore } from "../store/store";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+  const { loginResponse } = useStore();
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
@@ -42,21 +48,23 @@ export default function Page() {
       password: Yup.string().required("Please Enter Your Password"),
     }),
     onSubmit: (values) => {
-      const users = getUsers(); // getUsers is a helper function
-      const user = users.find(
-        (user) =>
-          user.email === values.email && user.password === values.password
-      );
-
-      if (user) {
-        toast("Login successful");
-        localStorage.setItem("loggedInUser", JSON.stringify(user));
-        router.push("/dashboard");
-      } else {
-        toast("Invalid credentials");
-      }
+      loginUser(values);
     },
   });
+
+  useEffect(() => {
+    if (
+      JSON.stringify(loginResponse) !== "{}" ||
+      Object.keys(loginResponse).length !== 0
+    ) {
+      toast(`${loginResponse}`); // Toast the data
+      if (loginResponse == "Successful") {
+        useStore.getState().setLoginResponse({});
+        router.push("/dashboard");
+      }
+    }
+  }, [loginResponse]);
+
   return (
     <Container fluid id="loginContainer">
       <ToastContainer />
