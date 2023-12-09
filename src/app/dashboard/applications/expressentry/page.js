@@ -9,17 +9,31 @@ import DateInput from "../DateInput";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import axios from "axios";
+import { useStore } from "../../../store/store";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { expressentrySubmit } from "../../../apiCalls/apiCalls";
 
 export default function Express() {
+  const { formResponse } = useStore();
   const variants = {
     exit: { opacity: 0, x: "-100vw" },
     enter: { opacity: 1, x: "0" },
   };
+
+  useEffect(() => {
+    if (
+      JSON.stringify(formResponse) !== "{}" ||
+      Object.keys(formResponse).length !== 0
+    ) {
+      toast(`${formResponse}`); // Toast the data
+      if (formResponse == "Successful") {
+        useStore.getState().setFormResponse({});
+        router.push("/dashboard");
+      }
+    }
+  }, [formResponse]);
   ////YUP SCHEMA------------------------
   const schema = yup
     .object({

@@ -6,9 +6,11 @@ export const useStore = create(
     (set) => ({
       registerResponse: {},
       loginResponse: {},
+      formResponse: {},
       authUser: {},
       setRegisterResponse: (data) => set(() => ({ registerResponse: data })),
       setLoginResponse: (data) => set(() => ({ loginResponse: data })),
+      setFormResponse: (data) => set(() => ({ formResponse: data })),
       setauthUser: (data) => set(() => ({ authUser: data })),
     }),
     {

@@ -79,6 +79,8 @@ export const logoutUser = () => {
 
 export const expressentrySubmit = async (form) => {
   try {
+    // Clear the form response before making the API call
+    useStore.getState().setFormResponse({});
     const currentUserCookie = Cookies.get("currentUser");
     const userCookie = JSON.parse(currentUserCookie);
     const accessToken = userCookie.accessToken;
@@ -88,7 +90,11 @@ export const expressentrySubmit = async (form) => {
     );
 
     console.log(response.data);
+    useStore.getState().setFormResponse("Successful");
   } catch (error) {
     console.log(error);
+    useStore
+      .getState()
+      .setFormResponse("There seems to be an error, please try again later!"); // Store error in zustand store
   }
 };
